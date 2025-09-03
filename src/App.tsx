@@ -1,9 +1,15 @@
-function App() {
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Start from "./pages/Start";
+
+const App: React.FC = () => {
   return (
-    <>
-      <h1>Hello world</h1>
-    </>
+    <Router>
+      <Routes>
+        <Route path="/" element={<Start />} />
+      </Routes>
+    </Router>
   );
-}
+};
 
 export default App;
