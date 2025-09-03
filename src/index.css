@@ -1,1 +1,24 @@
 @import "tailwindcss";
+
+
+@import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&family=Libre+Baskerville:wght@400;700&display=swap');
+
+.font-spartan {
+  font-family: 'League Spartan', sans-serif;
+}
+
+.font-baskerville {
+  font-family: 'Libre Baskerville', serif;
+}
+.primary-color{
+    background-color: #059669;
+}
+.secondary-color{
+    background-color: #0EA5E9;
+}
+.terty-color{
+background-color: #EF4444;
+}
+.neutraly-color{
+    background-color: #374151;
+}
