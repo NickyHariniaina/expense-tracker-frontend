@@ -39,7 +39,9 @@ const Button: React.FC<ButtonProps> = ({
       disabled={disabled}
       className={`${bgClasses[bg_color]} ${
         sizeClasses[size]
-      } rounded-[10px] text-white cursor-pointer transition-transform active:scale-95 active:shadow-inner font-bold font-spartan uppercase ${
+      } rounded-[10px] text-white cursor-pointer 
+        transition-transform active:scale-95 active:shadow-inner font-bold 
+        font-spartan uppercase ${
         disabled ? "opacity-50 cursor-not-allowed" : ""
       } ${className}`}
     >
