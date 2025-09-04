@@ -39,7 +39,7 @@ const ParticleBackground = () => {
             mode: "push",
           },
           onHover: {
-            enable: true,
+            enable: false,
             mode: "repulse",
           },
         },
@@ -81,7 +81,7 @@ const ParticleBackground = () => {
           value: 80,
         },
         opacity: {
-          value: 0.5,
+          value: 0.7,
         },
         shape: {
           type: "circle",
