@@ -1,8 +1,15 @@
+import { useNavigate } from "react-router-dom";
 import Button from "../components/Button/Button";
 import Logo from "../components/Logo/Logo";
 import ParticleBackground from "../components/ParticuleBackground";
 
 export default function Start() {
+  {/**redirection to auth page */}
+  const navigate = useNavigate();
+  const handleClick = () => {
+    navigate("/auth")
+  }
+
   return (
     <div className="w-screen h-screen overflow-hidden relative">
       <ParticleBackground />
@@ -22,6 +29,7 @@ export default function Start() {
 
         {/*Button to go to the login page*/}
         <Button
+          onClick={handleClick}
           text="GET STARTED"
           bg_color="secondary"
           size="lg"
