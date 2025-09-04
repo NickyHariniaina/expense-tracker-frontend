@@ -1,13 +1,13 @@
 import React from "react";
 
 interface ButtonProps {
-  text: string; 
+  text: string;
   onClick?: () => void;
-  type?: "button" | "submit" | "reset"; 
-  bg_color?: "primary" | "secondary" | "terty"| "neutraly";
-  size?: "sm" | "md" | "lg"; 
-  disabled?: boolean; 
-  className?: string; 
+  type?: "button" | "submit" | "reset";
+  bg_color?: "primary" | "secondary" | "terty" | "neutraly";
+  size?: "sm" | "md" | "lg";
+  disabled?: boolean;
+  className?: string;
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -19,12 +19,11 @@ const Button: React.FC<ButtonProps> = ({
   disabled = false,
   className = "",
 }) => {
-  
   const bgClasses = {
     primary: "primary-color",
     secondary: "secondary-color",
     terty: "terty-color",
-    neutraly:"neutraly-color",
+    neutraly: "neutraly-color",
   };
 
   const sizeClasses = {
@@ -38,7 +37,13 @@ const Button: React.FC<ButtonProps> = ({
       type={type}
       onClick={onClick}
       disabled={disabled}
-      className={`${bgClasses[bg_color]} ${sizeClasses[size]} rounded-3xl text-white font-bold font-spartan uppercase ${disabled ? "opacity-50 cursor-not-allowed" : ""} ${className}`}
+      className={`${bgClasses[bg_color]} ${
+        sizeClasses[size]
+      } rounded-[10px] text-white cursor-pointer 
+        transition-transform active:scale-95 active:shadow-inner font-bold 
+        font-spartan uppercase ${
+        disabled ? "opacity-50 cursor-not-allowed" : ""
+      } ${className}`}
     >
       {text}
     </button>
