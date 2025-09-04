@@ -33,7 +33,7 @@ export default function Start() {
           text="GET STARTED"
           bg_color="secondary"
           size="lg"
-          className="hover:bg-[#059669]! transition-all! duration-300 ease-in-out"
+          className="hover:bg-[059669]! transition-all! duration-300 ease-in-out"
         />
       </div>
     </div>
