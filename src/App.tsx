@@ -9,6 +9,6 @@ const App: React.FC = () => {
         <Route path="/" element={<Start />} />
       </Routes>
     </Router>
-    )
+  );
 };
 export default App;
