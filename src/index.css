@@ -12,9 +12,6 @@
 .primary-color{
     background-color: #059669;
 }
-.text-primary-color{
-    color: #059669;
-}
 .secondary-color{
     background-color: #0EA5E9;
 }
@@ -24,3 +21,20 @@ background-color: #EF4444;
 .neutraly-color{
     background-color: #374151;
 }
+
+.slide-in-left {
+  animation: slideInLeft 0.5s ease-in-out forwards;
+}
+
+@keyframes slideInLeft {
+  0% {
+    transform: translateX(-100%);
+    opacity: 0;
+  }
+  100% {
+    transform: translateX(0);
+    opacity: 1;
+  }
+}
+
+
