@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import Button from "../components/Button/Button";
 import Logo from "../components/Logo/Logo";
 import ParticleBackground from "../components/ParticuleBackground";
+import Banner from "../components/Banner/Banner";
 
 export default function Start() {
   {/**redirection to auth page */}
@@ -20,7 +21,7 @@ export default function Start() {
       {/**All element in the center */}
       <div className="w-full h-full flex flex-col items-center justify-center text-center space-y-4 relative z-10">
         <Logo size={150} />
-        <h2 className="text-[50px] font-bold w-1/2 font-baskerville">
+        <h2 className="text-[50px] font-bold w-1/2 font-baskerville text-">
           Take a full control of your money - all in one place
         </h2>
         <h3 className="text-[24px] font-spartan font-light py-3">
@@ -33,9 +34,12 @@ export default function Start() {
           text="GET STARTED"
           bg_color="secondary"
           size="lg"
-          className="hover:bg-[059669]! transition-all! duration-300 ease-in-out"
+          className="hover:bg-[#059669]! transition-all! duration-300 ease-in-out"
         />
       </div>
+
+      {/**banner */}
+      <Banner />
     </div>
   );
 }
