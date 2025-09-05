@@ -69,6 +69,7 @@ export const getExpenseById = async (
 };
 
 export const updateExpense = async (
+  id: number,
   amount: string,
   date: Date,
   categoryId: number,
@@ -91,7 +92,7 @@ export const updateExpense = async (
     if (endDate) formData.append("endDate", endDate.toISOString());
     if (receipt) formData.append("receipt", receipt);
 
-    const res = await fetch("http://localhost:3000/api/expenses", {
+    const res = await fetch("http://localhost:3000/api/expenses/" + id, {
       method: "PUT",
       body: formData,
       credentials: "include",

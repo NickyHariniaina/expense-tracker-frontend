@@ -26,13 +26,14 @@ export const createIncome = async (
 };
 
 export const updateIncome = async (
+  id: number,
   amount: number,
   date: Date,
   source: string,
   description: string | null,
 ) => {
   try {
-    const res = await fetch("http://localhost:3000/api/incomes", {
+    const res = await fetch("http://localhost:3000/api/incomes/" + id, {
       method: "PUT",
       body: JSON.stringify({
         amount: amount,
@@ -47,6 +48,9 @@ export const updateIncome = async (
     });
 
     // CAN YOU PLEASE VERIFY EACH CASE WITH res.status ?
+    // 200
+    // 404
+    // 500
   } catch (error) {
     console.log(error);
   }
@@ -55,8 +59,14 @@ export const updateIncome = async (
 export const deleteIncomesById = async (id: number) => {
   try {
     const res = await fetch("http://localhost:3000/api/incomes/" + id, {
-      method: "PUT",
-      crea
+      method: "DELETE",
+      credentials: "include"
     })
+    
+    //CAN YOU PLEASE VERIFY EACH status
+    //200
+    //404
+    //500
+
   }
 }
