@@ -23,7 +23,7 @@ const Banner: React.FC = () => {
               </svg>
             </div>
 
-            <div className="absolute font-spartan bottom-6 right-6 text-sm text-white font-light">
+            <div className="absolute font-spartan bottom-5 right-5 text-[16px] text-white font-light">
               © Copyright 2025 | Student group
             </div>
           </div>
