@@ -16,7 +16,7 @@ export const createIncome = async (
       headers: {
         "Content-type": "application/json",
       },
-      credentials: "include"
+      credentials: "include",
     });
 
     // CAN YOU PLEASE VERIFY EACH CASE WITH res.status ?
@@ -44,7 +44,7 @@ export const updateIncome = async (
       headers: {
         "Content-type": "application/json",
       },
-      credentials: "include"
+      credentials: "include",
     });
 
     // CAN YOU PLEASE VERIFY EACH CASE WITH res.status ?
@@ -60,13 +60,14 @@ export const deleteIncomesById = async (id: number) => {
   try {
     const res = await fetch("http://localhost:3000/api/incomes/" + id, {
       method: "DELETE",
-      credentials: "include"
-    })
-    
+      credentials: "include",
+    });
+
     //CAN YOU PLEASE VERIFY EACH status
     //200
     //404
     //500
-
+  } catch (error) {
+    console.log(error);
   }
-}
+};
