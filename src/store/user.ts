@@ -14,6 +14,10 @@ interface UserState {
   userIncomes: UserIncome[] | null;
   userSummary: UserSummary | null;
   fetchUserData: () => Promise<void>;
+  fetchUserCategories: () => Promise<void>;
+  fetchUserExpenses: () => Promise<void>;
+  fetchUserIncomes: () => Promise<void>;
+  fetchUserSummary: () => Promise<void>;
 }
 
 // BASE_URL, should be put in the env later
@@ -50,7 +54,7 @@ export const useUserStore = create<UserState>((set, get) => ({
     }
   },
 
-  fecthUserCategories: async () => {
+  fetchUserCategories: async () => {
     try {
       const response = await fetch(BASE_URL + "/categories", {
         method: "GET",
