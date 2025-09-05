@@ -67,3 +67,44 @@ export const getExpenseById = async (
     console.log(error);
   }
 };
+
+export const updateExpense = async (
+  amount: string,
+  date: Date,
+  categoryId: number,
+  description: string | null,
+  type: boolean,
+  startDate: Date | null,
+  endDate: Date | null,
+  receipt: File | null,
+) => {
+  try {
+    const formData = new FormData();
+
+    formData.append("amount", amount);
+    formData.append("date", date.toISOString());
+    formData.append("categoryId", categoryId.toString());
+    formData.append("type", type ? "true" : "false");
+
+    if (description) formData.append("description", description);
+    if (startDate) formData.append("startDate", startDate.toISOString());
+    if (endDate) formData.append("endDate", endDate.toISOString());
+    if (receipt) formData.append("receipt", receipt);
+
+    const res = await fetch("http://localhost:3000/api/expenses", {
+      method: "PUT",
+      body: formData,
+      credentials: "include",
+    });
+
+    if (res.status === 200) {
+      console.log("Expense modified");
+    } else if (res.status === 400) {
+      console.log("Bad request");
+    } else if (res.status === 500) {
+      console.log("Internal Server Error");
+    }
+  } catch (error) {
+    console.error(error);
+  }
+};
