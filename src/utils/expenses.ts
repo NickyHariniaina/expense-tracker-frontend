@@ -108,3 +108,21 @@ export const updateExpense = async (
     console.error(error);
   }
 };
+export const deleteExpenseById = async (id: number): Promise<void> => {
+  try {
+    const res = await fetch("http://localhost:3000/api/expenses/" + id, {
+      method: "DELETE",
+      credentials: "include",
+    });
+
+    if (res.status === 200) {
+      console.log("Expense was deleted");
+    } else if (res.status === 404) {
+      console.log("Not found");
+    } else if (res.status === 500) {
+      console.log("Internal Server Error");
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
