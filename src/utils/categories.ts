@@ -18,3 +18,20 @@ export const createCategory = async (name: string) => {
     console.log(error);
   }
 };
+
+export const renameCategory = async (id: number, name: string) => {
+  try {
+    const res = await fetch("http://localhost:3000/api/categories/" + id, {
+      method: "PUT",
+      headers: {
+        "Content-type": "application/json",
+      },
+      body: JSON.stringify({
+        name: name,
+      }),
+      credentials: "include",
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
