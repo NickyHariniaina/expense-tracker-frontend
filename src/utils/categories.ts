@@ -35,3 +35,17 @@ export const renameCategory = async (id: number, name: string) => {
     console.log(error);
   }
 };
+
+export const deleteCategory = async (id: number) => {
+  try {
+    const res = await fetch("http://localhost:3000/api/categories/" + id, {
+      method: "DELETE",
+      headers: {
+        "Content-type": "application/json",
+      },
+      credentials: "include",
+    });
+  } catch (error) {
+    console.log(error);
+  }
+};
