@@ -32,3 +32,9 @@ export interface UserCategory {
   name: string;
   userId: number;
 }
+
+export interface UserSummary {
+  expense: number | null;
+  income: number | null;
+  balance: number | null;
+}
