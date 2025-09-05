@@ -1,6 +1,6 @@
 export interface UserData {
   email: string;
-  startDate: Date;
+  start_date: Date;
 }
 
 export interface UserExpense {
@@ -10,11 +10,11 @@ export interface UserExpense {
   amount: number;
   type: boolean;
   date: Date;
-  startDate: Date | null;
-  endDate: Date | null;
+  start_date: Date | null;
+  end_date: Date | null;
   receipt: string | null;
-  userId: number;
-  categoryId: number;
+  user_id: number;
+  category_id: number;
 }
 
 export interface UserIncome {
@@ -23,14 +23,14 @@ export interface UserIncome {
   date: Date;
   source: string;
   description: string;
-  creationDate: Date;
-  userId: number;
+  creation_date: Date;
+  user_id: number;
 }
 
 export interface UserCategory {
   id: number;
   name: string;
-  userId: number;
+  user_id: number;
 }
 
 export interface UserSummary {

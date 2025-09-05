@@ -41,11 +41,10 @@ export const useUserStore = create<UserState>((set) => ({
         response.status === 401 &&
         data.message === "Please create an account or log in"
       ) {
-        // redirect to login page
-      } else {
+        throw new Error(data.message);
       }
 
-      console.log(data);
+      set({ userData: data });
     } catch (error) {
       console.log(error);
     }

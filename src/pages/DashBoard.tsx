@@ -12,6 +12,8 @@ const DashBoard: FC = () => {
     login("nicky@mail.hei.school", "12345678");
     fetchUserData();
   }, [fetchUserData]);
+      console.log(userData);
+
   return (
     <>
       <SideBar />
