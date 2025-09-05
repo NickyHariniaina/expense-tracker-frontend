@@ -46,3 +46,25 @@ export const signup = async (email: string, password: string) => {
     console.log(error);
   }
 };
+
+export const refresh = async () => {
+  try {
+    const res = await fetch("http://loclahost:3000/api/auth/refresh", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+    if (res.status === 401) {
+      console.log("No refresh token");
+    } else if (res.status === 200) {
+      console.log("Refresh did work");
+    } else if (res.status === 500) {
+      console.log("Internal Server Error");
+    }
+  } catch (error) {
+    console.log(error);
+  }
+};
