@@ -5,11 +5,13 @@ import ParticleBackground from "../components/ParticuleBackground";
 import Banner from "../components/Banner/Banner";
 
 export default function Start() {
-  {/**redirection to auth page */}
+  {
+    /**redirection to auth page */
+  }
   const navigate = useNavigate();
   const handleClick = () => {
-    navigate("/auth")
-  }
+    navigate("/auth");
+  };
 
   return (
     <div className="w-screen h-screen overflow-hidden relative">
