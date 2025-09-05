@@ -1,3 +1,5 @@
+import type { UserIncome } from "../types/user";
+
 export const createIncome = async (
   amount: number,
   date: Date,
@@ -67,6 +69,22 @@ export const deleteIncomesById = async (id: number) => {
     //200
     //404
     //500
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+export const getIncomesById = async (
+  id: number,
+): Promise<UserIncome | undefined> => {
+  try {
+    const res = await fetch("http://localhost:3000/api/incomes/" + id, {
+      method: "GET",
+      credentials: "include",
+    });
+
+    const data = await res.json();
+    return data;
   } catch (error) {
     console.log(error);
   }
