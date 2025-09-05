@@ -120,9 +120,10 @@ export const useUserStore = create<UserState>((set, get) => ({
       console.log(error);
     }
   },
-  fetchUserSummary: async () => {
+  fetchUserSummary: async (
+    startDate: Date | undefined = get().userData?.start_date,
+  ) => {
     try {
-      const startDate = get().userData?.start_date;
       const response = await fetch(BASE_URL + "/summary?start=" + startDate, {
         method: "GET",
         credentials: "include",
