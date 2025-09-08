@@ -1,3 +1,5 @@
+import toast from "react-hot-toast";
+
 export const login = async (email: string, password: string) => {
   try {
     const res = await fetch("http://localhost:3000/api/auth/login", {
@@ -12,12 +14,13 @@ export const login = async (email: string, password: string) => {
       }),
     });
     if (res.status === 200) {
-      console.log("logged in");
+      toast.success("User logged in successfully.");
     } else if (res.status === 404) {
-      console.log("User not found");
+      toast.success("This user doesn't exist.");
     }
   } catch (error) {
     console.log(error);
+    toast.error("An error occurred while processing.");
   }
 };
 
@@ -36,14 +39,15 @@ export const signup = async (email: string, password: string) => {
     });
 
     if (res.status === 200) {
-      console.log("user created");
+      toast.success("User created successfully");
     } else if (res.status === 409) {
-      console.log("User already exist");
+      toast.error("This user already exists.");
     } else if (res.status === 500) {
-      console.log("Server Error");
+      toast.error("Internal Server Error");
     }
   } catch (error) {
     console.log(error);
+    toast.error("An error occurred while processing.");
   }
 };
 
