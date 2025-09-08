@@ -7,7 +7,7 @@ const isVisible = displayAnimation(1000);
   return (
     <>
     { isVisible && (
-    <footer className="fixed fade-in slide-in-left bottom-0 left-0 w-full z-50 primary-color text-white transition-opacity duration-500 opacity-100">
+    <footer className="sm:static md:fixed fade-in slide-in-left bottom-0 left-0 w-full z-50 primary-color text-white transition-opacity duration-500 opacity-100">
      
             <div className="relative w-full  h-24 bg-white overflow-hidden">
         <div className="absolute inset-0">
