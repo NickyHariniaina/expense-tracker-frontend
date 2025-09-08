@@ -1,11 +1,12 @@
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
 import Button from '../Button/Button';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faUser, faKey } from "@fortawesome/free-solid-svg-icons";
-import Banner from '../Banner/Banner';
-
-const Login: React.FC = () => {
+import { login } from '../../utils/auth';
+interface LoginFormProps {
+  toggleForm: () => void; 
+}
+const Login: React.FC<LoginFormProps> = ({toggleForm}) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -15,6 +16,14 @@ const Login: React.FC = () => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
+    try{
+      await login(email,password);
+    }catch(error){
+      setError('An error occured during login.')
+    }
+    finally{
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -28,8 +37,6 @@ const Login: React.FC = () => {
               </div>
             </div>
             <h2 className="text-3xl font-bold text-center font-spartan mb-6">Login</h2>
-            {error && <p className="text-red-500 text-sm text-center mb-4">{error}</p>}
-
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="relative">
                 <h2 className="text-2xl font-light text-center font-spartan mb-2">Email</h2>
@@ -83,15 +90,16 @@ const Login: React.FC = () => {
               </div>
 
               <div className="text-center mt-4">
-                <Link to="/signup" className="text-blue-500 hover:underline">
-                  Don’t have an account?
-                </Link>
+              <p onClick={toggleForm} style={{ cursor: 'pointer' }} className='text-blue hover:underline'>
+        Don't have an account? Sign up
+      </p>
               </div>
+              {error}
             </form>
           </div>
         </section>
       </div>
-      <Banner />
+      
     </div>
   );
 };
