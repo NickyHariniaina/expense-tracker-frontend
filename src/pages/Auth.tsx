@@ -2,20 +2,20 @@ import React from "react";
 import Logo from "../components/Logo/Logo";
 import expenseAuthImage from "../assets/expense-auth.svg";
 import ParticleBackground from "../components/ParticuleBackground";
-import Banner from "../components/Banner/Banner";
+import Login from "../components/Auth/LoginForm";
 
 const Auth: React.FC = () => {
   return (
     <div className="w-full h-full flex text-center space-y-3 relative z-10">
       <ParticleBackground />
-      <h1 className="font-baskerville  text-[24px] font-bold m-4 absolute top-0 left-0 z-10">
+      <h1 className="font-baskerville text-[24px] font-bold m-4 absolute top-0 left-0 z-10">
         WalletWatch
       </h1>
 
       <div className="flex flex-row justify-between items-center relative z-10">
-        {/*left side*/}
-        <div className="flex flex-col mt-32 ml-12 w-1/2 gap-4 items-start justify-center bg-none">
-          {/*Logo*/}
+        {/* Left side */}
+        <div className="flex flex-col mt-32 ml-12 w-1/2 gap-4 items-start justify-center bg-transparent">
+          {/* Logo */}
           <div className="mb-6">
             <Logo size={100} />
           </div>
@@ -37,12 +37,14 @@ const Auth: React.FC = () => {
           <img
             src={expenseAuthImage}
             alt="Finance dashboard"
-            className="animate-pulse w-40 ounded-2xl items-center relative"
+            className="animate-pulse w-40 rounded-2xl items-center relative z-1000"
           />
         </div>
+        {/* Right side - Login Form */}
+        <div className="w-1/2 h-full flex items-center justify-end">
+          <Login />
+        </div>
       </div>
-
-      <Banner />
     </div>
   );
 };
