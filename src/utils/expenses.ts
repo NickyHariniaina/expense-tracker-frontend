@@ -1,4 +1,5 @@
 import type { UserExpense } from "../types/user";
+import toast from "react-hot-toast";
 
 export const createExpense = async (
   amount: string,
@@ -12,7 +13,6 @@ export const createExpense = async (
 ) => {
   try {
     const formData = new FormData();
-
     formData.append("amount", amount);
     formData.append("date", date.toISOString());
     formData.append("categoryId", categoryId.toString());
@@ -30,14 +30,15 @@ export const createExpense = async (
     });
 
     if (res.status === 201) {
-      console.log("expense created");
-    } else if (res.status === 400) {
-      console.log("Bad request");
+      toast.success("Expense created successfully");
     } else if (res.status === 500) {
-      console.log("Internal Server Error");
+      toast.error("Internal Server Error");
+    } else {
+      toast.error("Unexpected error");
     }
   } catch (error) {
     console.error(error);
+    toast.error("Network error");
   }
 };
 
@@ -45,26 +46,25 @@ export const getExpenseById = async (
   id: number,
 ): Promise<UserExpense | undefined> => {
   try {
-    const res = await fetch("http://localhost:3000/api/expenses/" + id, {
+    const res = await fetch(`http://localhost:3000/api/expenses/${id}`, {
       method: "GET",
-      headers: {
-        "Content-type": "application/json",
-      },
+      headers: { "Content-type": "application/json" },
       credentials: "include",
     });
 
     if (res.status === 200) {
-      console.log("Expense was found");
+      const data: UserExpense = await res.json();
+      return data;
     } else if (res.status === 404) {
-      console.log("Not found");
+      toast.error("Expense not found");
     } else if (res.status === 500) {
-      console.log("Internal Server Error");
+      toast.error("Internal Server Error");
+    } else {
+      toast.error("Unexpected error");
     }
-
-    const data = await res.json();
-    return data;
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    toast.error("Network error");
   }
 };
 
@@ -81,7 +81,6 @@ export const updateExpense = async (
 ) => {
   try {
     const formData = new FormData();
-
     formData.append("amount", amount);
     formData.append("date", date.toISOString());
     formData.append("categoryId", categoryId.toString());
@@ -92,38 +91,43 @@ export const updateExpense = async (
     if (endDate) formData.append("endDate", endDate.toISOString());
     if (receipt) formData.append("receipt", receipt);
 
-    const res = await fetch("http://localhost:3000/api/expenses/" + id, {
+    const res = await fetch(`http://localhost:3000/api/expenses/${id}`, {
       method: "PUT",
       body: formData,
       credentials: "include",
     });
 
     if (res.status === 200) {
-      console.log("Expense modified");
-    } else if (res.status === 400) {
-      console.log("Bad request");
+      toast.success("Expense modified successfully");
     } else if (res.status === 500) {
-      console.log("Internal Server Error");
+      toast.error("Internal Server Error");
+    } else {
+      toast.error("Unexpected error");
     }
   } catch (error) {
     console.error(error);
+    toast.error("Network error");
   }
 };
+
 export const deleteExpenseById = async (id: number): Promise<void> => {
   try {
-    const res = await fetch("http://localhost:3000/api/expenses/" + id, {
+    const res = await fetch(`http://localhost:3000/api/expenses/${id}`, {
       method: "DELETE",
       credentials: "include",
     });
 
     if (res.status === 200) {
-      console.log("Expense was deleted");
+      toast.success("Expense deleted successfully");
     } else if (res.status === 404) {
-      console.log("Not found");
+      toast.error("Expense not found");
     } else if (res.status === 500) {
-      console.log("Internal Server Error");
+      toast.error("Internal Server Error");
+    } else {
+      toast.error("Unexpected error");
     }
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    toast.error("Network error");
   }
 };
