@@ -1,4 +1,5 @@
 import type { UserIncome } from "../types/user";
+import toast from "react-hot-toast";
 
 export const createIncome = async (
   amount: number,
@@ -10,10 +11,10 @@ export const createIncome = async (
     const res = await fetch("http://localhost:3000/api/incomes", {
       method: "POST",
       body: JSON.stringify({
-        amount: amount,
-        date: date,
-        source: source,
-        description: description,
+        amount,
+        date,
+        source,
+        description,
       }),
       headers: {
         "Content-type": "application/json",
@@ -21,9 +22,20 @@ export const createIncome = async (
       credentials: "include",
     });
 
-    // CAN YOU PLEASE VERIFY EACH CASE WITH res.status ?
+    if (res.status === 201) {
+      toast.success("Income created successfully ✅");
+    } else if (res.status === 400) {
+      toast.error("Bad request ❌");
+    } else if (res.status === 401) {
+      toast.error("Unauthorized 🚫");
+    } else if (res.status === 500) {
+      toast.error("Internal Server Error 💥");
+    } else {
+      toast.error(`Unexpected status: ${res.status}`);
+    }
   } catch (error) {
-    console.log(error);
+    toast.error("Network error 🌐");
+    console.error(error);
   }
 };
 
@@ -38,10 +50,10 @@ export const updateIncome = async (
     const res = await fetch("http://localhost:3000/api/incomes/" + id, {
       method: "PUT",
       body: JSON.stringify({
-        amount: amount,
-        date: date,
-        source: source,
-        description: description,
+        amount,
+        date,
+        source,
+        description,
       }),
       headers: {
         "Content-type": "application/json",
@@ -49,12 +61,20 @@ export const updateIncome = async (
       credentials: "include",
     });
 
-    // CAN YOU PLEASE VERIFY EACH CASE WITH res.status ?
-    // 200
-    // 404
-    // 500
+    if (res.status === 200) {
+      toast.success("Income updated successfully ✏️");
+    } else if (res.status === 404) {
+      toast.error("Income not found 🔍");
+    } else if (res.status === 401) {
+      toast.error("Unauthorized 🚫");
+    } else if (res.status === 500) {
+      toast.error("Internal Server Error 💥");
+    } else {
+      toast.error(`Unexpected status: ${res.status}`);
+    }
   } catch (error) {
-    console.log(error);
+    toast.error("Network error 🌐");
+    console.error(error);
   }
 };
 
@@ -65,12 +85,20 @@ export const deleteIncomesById = async (id: number) => {
       credentials: "include",
     });
 
-    //CAN YOU PLEASE VERIFY EACH status
-    //200
-    //404
-    //500
+    if (res.status === 200) {
+      toast.success("Income deleted 🗑️");
+    } else if (res.status === 404) {
+      toast.error("Income not found 🔍");
+    } else if (res.status === 401) {
+      toast.error("Unauthorized 🚫");
+    } else if (res.status === 500) {
+      toast.error("Internal Server Error 💥");
+    } else {
+      toast.error(`Unexpected status: ${res.status}`);
+    }
   } catch (error) {
-    console.log(error);
+    toast.error("Network error 🌐");
+    console.error(error);
   }
 };
 
@@ -83,9 +111,21 @@ export const getIncomesById = async (
       credentials: "include",
     });
 
-    const data = await res.json();
-    return data;
+    if (res.status === 200) {
+      toast.success("Income retrieved successfully 📥");
+    } else if (res.status === 404) {
+      toast.error("Income not found 🔍");
+    } else if (res.status === 401) {
+      toast.error("Unauthorized 🚫");
+    } else if (res.status === 500) {
+      toast.error("Internal Server Error 💥");
+    } else {
+      toast.error(`Unexpected status: ${res.status}`);
+    }
+
+    return await res.json();
   } catch (error) {
-    console.log(error);
+    toast.error("Network error 🌐");
+    console.error(error);
   }
 };
