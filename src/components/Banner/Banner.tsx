@@ -1,8 +1,8 @@
-import React from 'react';
-import displayAnimation from '../../hooks/DisplayAnimation';
+import React from "react";
+import displayAnimation from "../../hooks/DisplayAnimation";
 
 const Banner: React.FC = () => {
-const isVisible = displayAnimation(1000);
+  const isVisible = displayAnimation(300);
 
   return (
     <>
@@ -23,17 +23,13 @@ const isVisible = displayAnimation(1000);
             />
           </svg>
         </div>
-
-        <div className="absolute font-spartan bottom-6 right-6 text-sm text-white font-light">
-          © Copyright 2025 | Student group
-        </div>
-      </div>
-     
-      
-    </footer>
-)
-}
-</>
+            <div className="absolute font-spartan bottom-5 right-5 text-[16px] text-white font-light">
+              © Copyright 2025 | Student group
+            </div>
+          </div>
+        </footer>
+      )}
+    </>
   );
 };
 
