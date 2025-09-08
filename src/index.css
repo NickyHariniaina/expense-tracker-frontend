@@ -1,5 +1,5 @@
 @import url('https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700&family=Libre+Baskerville:wght@400;700&display=swap');
-
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css');
 @import "tailwindcss";
 
 .font-spartan {
@@ -21,6 +21,19 @@ background-color: #EF4444;
 .neutraly-color{
     background-color: #374151;
 }
+.text-green{
+  color: #059669;
+}
+.text-blue{
+  color: #0EA5E9;
+}
+.text-red{
+  color: #EF4444;
+}
+.text-gray{
+  color:#374151;
+}
+
 
 .slide-in-left {
   animation: slideInLeft 0.5s ease-in-out forwards;
