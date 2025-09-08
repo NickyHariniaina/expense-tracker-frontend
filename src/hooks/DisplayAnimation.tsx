@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from "react";
 
 const displayAnimation = (delay: number =2000): boolean=>{
     const [isVisible , setIsVisible] = useState<boolean>(false);
