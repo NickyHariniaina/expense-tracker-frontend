@@ -1,3 +1,4 @@
+import type { UserCategory } from "../types/user";
 export const createCategory = async (name: string) => {
   try {
     const res = await fetch("http://localhost:3000/api/categories", {
@@ -47,5 +48,28 @@ export const deleteCategory = async (id: number) => {
     });
   } catch (error) {
     console.log(error);
+  }
+};
+
+export const fetchCategories = async (): Promise<UserCategory[]> => {
+  try {
+    const res = await fetch("http://localhost:3000/api/categories", {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      credentials: "include",
+    });
+
+    if (res.status === 200) {
+      const data = await res.json();
+      return data;
+    } else {
+      console.error("Failed to fetch categories:", res.status);
+      return [];
+    }
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+    return [];
   }
 };

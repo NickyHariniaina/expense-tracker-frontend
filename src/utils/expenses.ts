@@ -2,10 +2,10 @@ import type { UserExpense } from "../types/user";
 
 export const createExpense = async (
   amount: string,
-  date: Date,
   categoryId: number,
   description: string | null,
   type: boolean,
+  date: Date | null,
   startDate: Date | null,
   endDate: Date | null,
   receipt: File | null,
@@ -14,13 +14,18 @@ export const createExpense = async (
     const formData = new FormData();
 
     formData.append("amount", amount);
-    formData.append("date", date.toISOString());
     formData.append("categoryId", categoryId.toString());
     formData.append("type", type ? "true" : "false");
 
     if (description) formData.append("description", description);
-    if (startDate) formData.append("startDate", startDate.toISOString());
+    if (type) {
+      if (startDate) formData.append("startDate", startDate.toISOString());
     if (endDate) formData.append("endDate", endDate.toISOString());
+      
+    }else{
+      if(date) formData.append("date", date.toISOString());
+    }
+    
     if (receipt) formData.append("receipt", receipt);
 
     const res = await fetch("http://localhost:3000/api/expenses", {
@@ -71,11 +76,11 @@ export const getExpenseById = async (
 export const updateExpense = async (
   id: number,
   amount: string,
-  date: Date,
   categoryId: number,
   description: string | null,
   type: boolean,
   startDate: Date | null,
+  date: Date | null,
   endDate: Date | null,
   receipt: File | null,
 ) => {
@@ -83,13 +88,16 @@ export const updateExpense = async (
     const formData = new FormData();
 
     formData.append("amount", amount);
-    formData.append("date", date.toISOString());
     formData.append("categoryId", categoryId.toString());
     formData.append("type", type ? "true" : "false");
 
     if (description) formData.append("description", description);
-    if (startDate) formData.append("startDate", startDate.toISOString());
-    if (endDate) formData.append("endDate", endDate.toISOString());
+    if (type) { // recurring
+      if (startDate) formData.append("startDate", startDate.toISOString());
+      if (endDate) formData.append("endDate", endDate.toISOString());
+    } else { // one-time
+      if (date) formData.append("date", date.toISOString());
+    }
     if (receipt) formData.append("receipt", receipt);
 
     const res = await fetch("http://localhost:3000/api/expenses/" + id, {
