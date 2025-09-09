@@ -80,7 +80,7 @@ const ExpenseForm: React.FC = () => {
   };
 
   return (
-    <div className="max-w-md mx-auto p-6 justify-center items-center bg-white shadow-md shadow-gray-600 rounded-lg">
+    <div className="max-w-md mx-auto p-6 justify-center items-center font-spartan bg-white shadow-md shadow-gray-600 rounded-lg">
       <h2 className="text-4xl font-spartan text-red text-center font-bold mb-4">Create New Expense</h2>
       {error && <p className="text-red-500 mb-4">{error}</p>}
       {success && <p className="text-green mb-4">{success}</p>}
