@@ -13,7 +13,7 @@ import {
 } from 'chart.js';
 import { useEffect, useState } from "react";
 import { getAlert, getMonthlySummary } from "../../utils/summary";
-import type { MonthlySummary } from "../../store/summary";
+import type { MonthlySummary } from "../../types/summary";
 
 // Save components on ChartJS
 ChartJS.register(
