@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { createCategory, renameCategory } from "../../utils/categories";
 import type { UserCategory } from "../../types/user";
+import Button from "../Button/Button";
 
 interface CategoryFormProps {
   category: UserCategory | null; // <-- ajouté
@@ -33,9 +34,9 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ category, onClose, afterSub
   };
 
   return (
-    <div className="fixed inset-0 flex items-center justify-center bg-black bg-opacity-40 z-50">
-      <div className="bg-white p-6 rounded-lg shadow-lg w-96">
-        <h2 className="text-lg font-semibold mb-4">{category ? "Edit Category" : "Add Category"}</h2>
+    <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-[1px] bg-white/10">
+  <div className="bg-white rounded-xl p-6 shadow-lg w-[90%] max-w-md mx-auto">
+        <h2 className="text-4xl text-green text-center font-semibold mb-4">{category ? "Edit Category" : "Add Category"}</h2>
         <form onSubmit={handleSubmit} className="space-y-4">
           <input
             type="text"
@@ -45,9 +46,23 @@ const CategoryForm: React.FC<CategoryFormProps> = ({ category, onClose, afterSub
             className="w-full border rounded px-3 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
           />
           <div className="flex justify-end space-x-2">
-            <button type="button" onClick={onClose} className="px-4 py-2 bg-gray-300 rounded hover:bg-gray-400">Cancel</button>
-            <button type="submit" className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">{category ? "Save" : "Add"}</button>
-          </div>
+  <Button
+    text="Cancel"
+    onClick={onClose}
+    bg_color="neutraly"
+    size="md"
+    className="hover:bg-gray-400"
+  />
+
+  <Button
+    text={category ? "Save" : "Add"}
+    type="submit"
+    bg_color="secondary"
+    size="md"
+    className="hover:bg-blue-600"
+  />
+</div>
+
         </form>
       </div>
     </div>

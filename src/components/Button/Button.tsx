@@ -8,6 +8,7 @@ interface ButtonProps {
   size?: "sm" | "md" | "lg";
   disabled?: boolean;
   className?: string;
+  children?: React.ReactNode; // Ajout de la prop children
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -18,6 +19,7 @@ const Button: React.FC<ButtonProps> = ({
   size = "md",
   disabled = false,
   className = "",
+  children, // Ajout de children comme paramètre
 }) => {
   const bgClasses = {
     primary: "primary-color",
@@ -46,6 +48,7 @@ const Button: React.FC<ButtonProps> = ({
       } ${className}`}
     >
       {text}
+      {children}
     </button>
   );
 };
