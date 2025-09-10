@@ -4,6 +4,7 @@ import Start from "./pages/Start";
 import Auth from "./pages/Auth";
 import DashBoard from "./pages/DashBoard";
 import { Toaster } from "react-hot-toast";
+import DashboardHome from "./components/DashboardElement/DashboardHome";
 
 const App: React.FC = () => {
   return (
@@ -12,11 +13,11 @@ const App: React.FC = () => {
         <Routes>
           <Route path="/" element={<Start />} />
           <Route path="/auth" element={<Auth />} />
-          <Route path="/dashboard" element={<DashBoard />} />
-          <Route path="/dashboard/expense" />
-          <Route path="/dashboard/income" />
-          <Route path="/dashboard/category" />
-          <Route path="/dashboard/summary" />
+          {/*dashboard routes*/}
+          <Route path="/dashboard" element={<DashBoard />}>
+            <Route index element={<DashboardHome />} />
+          </Route>
+
         </Routes>
         <Toaster />
       </Router>
