@@ -59,24 +59,18 @@ export const useUserStore = create<UserState>((set, get) => ({
       const response = await fetch(BASE_URL + "/categories", {
         method: "GET",
         credentials: "include",
-        headers: {
-          "Content-type": "application/json",
-        },
+        headers: { "Content-type": "application/json" },
       });
-
-      const data = await response.json();
-
-      if (response.status !== 200) {
-        throw new Error("An error ocurred with the server");
-      }
-
-      set({
-        userCategories: data,
-      });
+      const result = await response.json();
+  
+      if (response.status !== 200) throw new Error("Server error");
+  
+      set({ userCategories: result.data });
     } catch (error) {
       console.log(error);
     }
   },
+  
 
   fetchUserExpenses: async () => {
     try {
