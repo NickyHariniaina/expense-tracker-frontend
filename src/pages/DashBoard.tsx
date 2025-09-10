@@ -2,6 +2,7 @@ import { type FC } from "react";
 import SideBar from "../components/SideBar/Sidebar";
 import { useUserStore } from "../store/user";
 import { useFetchBasicUser } from "../hooks/useFetchBasicData";
+import { Outlet } from "react-router-dom";
 
 const DashBoard: FC = () => {
   const { userData, userCategories, userExpenses, userIncomes, userSummary } =
@@ -20,7 +21,15 @@ const DashBoard: FC = () => {
 
   return (
     <>
-      <SideBar />
+      <div className="flex">
+        {/*left sidebar*/}
+        <SideBar />
+        {/*Right sidebar*/}
+        {/* TODO : add rectangle area */}
+        <div className="">
+          <Outlet />
+        </div>
+      </div>
     </>
   );
 };
