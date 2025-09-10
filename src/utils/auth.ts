@@ -11,18 +11,24 @@ export const login = async (email: string, password: string) => {
 
     if (res.status === 200) {
       toast.success("User logged in successfully.");
+      return { success : true, status : res.status };
     } else if (res.status === 404) {
       toast.error("User not found.");
+      return { success : false, status : res.status };
     } else if (res.status === 401) {
       toast.error("Password doesn't match.");
+      return { success : false, status : res.status };
     } else if (res.status === 500) {
       toast.error("Internal Server Error.");
+      return { success : false, status : res.status };
     } else {
       toast.error("Unexpected error.");
+      return { success : false, status : res.status};
     }
   } catch (error) {
     console.error(error);
     toast.error("Network error.");
+    return { success: false, status: 0 };
   }
 };
 

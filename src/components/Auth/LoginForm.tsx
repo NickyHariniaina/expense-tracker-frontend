@@ -3,21 +3,31 @@ import Button from '../Button/Button';
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faUser, faKey } from "@fortawesome/free-solid-svg-icons";
 import { login } from '../../utils/auth';
+import { useNavigate } from 'react-router-dom';
+
 interface LoginFormProps {
   toggleForm: () => void; 
 }
+
 const Login: React.FC<LoginFormProps> = ({toggleForm}) => {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
+  const navigate = useNavigate();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
     try{
-      await login(email,password);
+      const result = await login(email,password);
+
+      if (result.success) {
+        setTimeout(() => {
+          navigate('/dashboard');
+        }, 2000);
+      }
     }catch(error){
       setError('An error occured during login.')
     }
@@ -36,10 +46,14 @@ const Login: React.FC<LoginFormProps> = ({toggleForm}) => {
                 <FontAwesomeIcon icon={faUser} size="3x" />
               </div>
             </div>
-            <h2 className="text-3xl font-bold text-center font-spartan mb-6">Login</h2>
+            <h2 className="text-3xl font-bold text-center font-spartan mb-6">
+              Login
+            </h2>
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="relative">
-                <h2 className="text-2xl font-light text-center font-spartan mb-2">Email</h2>
+                <h2 className="text-2xl font-light text-center font-spartan mb-2">
+                  Email
+                </h2>
                 <div className="relative w-full">
                   <FontAwesomeIcon
                     icon={faEnvelope}
@@ -59,7 +73,9 @@ const Login: React.FC<LoginFormProps> = ({toggleForm}) => {
               </div>
 
               <div className="relative">
-                <h2 className="text-2xl font-light text-center font-spartan mb-2">Password</h2>
+                <h2 className="text-2xl font-light text-center font-spartan mb-2">
+                  Password
+                </h2>
                 <div className="relative w-full">
                   <FontAwesomeIcon
                     icon={faKey}
@@ -80,7 +96,7 @@ const Login: React.FC<LoginFormProps> = ({toggleForm}) => {
 
               <div className="text-center">
                 <Button
-                  text={isLoading ? 'Connexion...' : 'LOG IN'}
+                  text={isLoading ? "Connexion..." : "LOG IN"}
                   type="submit"
                   bg_color="secondary"
                   size="md"
@@ -90,16 +106,19 @@ const Login: React.FC<LoginFormProps> = ({toggleForm}) => {
               </div>
 
               <div className="text-center mt-4">
-              <p onClick={toggleForm} style={{ cursor: 'pointer' }} className='text-blue hover:underline'>
-        Don't have an account? Sign up
-      </p>
+                <p
+                  onClick={toggleForm}
+                  style={{ cursor: "pointer" }}
+                  className="text-blue hover:underline"
+                >
+                  Don't have an account? Sign up
+                </p>
               </div>
               {error}
             </form>
           </div>
         </section>
       </div>
-      
     </div>
   );
 };
