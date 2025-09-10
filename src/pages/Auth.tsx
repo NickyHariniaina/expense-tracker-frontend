@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Logo from "../components/Logo/Logo";
 import expenseAuthImage from "../assets/expense-auth.svg";
 import ParticleBackground from "../components/ParticuleBackground";
@@ -8,9 +8,10 @@ import Banner from "../components/Banner/Banner";
 
 const Auth: React.FC = () => {
   const [isLoging, setLoging] = useState(true);
-    const toggleForm=()=>{
-      setLoging(!isLoging);
-    }
+  const toggleForm=()=>{
+    setLoging(!isLoging);
+  }
+
   return (
     <div className="w-full h-full flex text-center space-y-3 relative z-10">
       <ParticleBackground />

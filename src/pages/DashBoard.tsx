@@ -5,7 +5,7 @@ import { useFetchBasicUser } from "../hooks/useFetchBasicData";
 
 const DashBoard: FC = () => {
   const { userData, userCategories, userExpenses, userIncomes, userSummary } =
-    useUserStore();
+  useUserStore();
 
   useFetchBasicUser();
 

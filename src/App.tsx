@@ -11,8 +11,12 @@ const App: React.FC = () => {
       <Router>
         <Routes>
           <Route path="/" element={<Start />} />
-          <Route path="/Auth" element={<Auth />} />
+          <Route path="/auth" element={<Auth />} />
           <Route path="/dashboard" element={<DashBoard />} />
+          <Route path="/dashboard/expense" />
+          <Route path="/dashboard/income" />
+          <Route path="/dashboard/category" />
+          <Route path="/dashboard/summary" />
         </Routes>
         <Toaster />
       </Router>
