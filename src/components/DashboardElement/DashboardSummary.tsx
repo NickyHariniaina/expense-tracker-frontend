@@ -11,7 +11,9 @@ import {
   Tooltip,
   Legend,
 } from 'chart.js';
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import { getAlert, getMonthlySummary } from "../../utils/summary";
+import type { MonthlySummary } from "../../store/summary";
 
 // Save components on ChartJS
 ChartJS.register(
@@ -26,22 +28,36 @@ ChartJS.register(
   Legend
 );
 
-interface MonthlySummary {
-  totalIncome : number;
-  totalExpense : number;
-  balance : number;
-  expenseByCategory : { [key: string]: number };
-  monthlyTrend : { month: string; income: number; expense: number }[];
-}
-
 const DashboardSummary: React.FC = () => {
   const [summary, setSummary] = useState<MonthlySummary | null> (null);
   const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState(new Date());
+  
+  // fetch summary
+  const fetchSummary = async () => {
+    try {
+      setLoading(true);
+      const data = await getMonthlySummary(selectedDate);
+      if (data) {
+        setSummary(data);
+      }
+    } catch (error) {
+      console.error('Error fetching summary:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchSummary();
+  }, [selectedDate]);
+
+  const handleClickAlert = async () => {
+    await getAlert();
+  }
 
   return (
     <>
-      <h1>Hello Summary</h1>
     </>
   );
 }
