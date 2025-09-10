@@ -12,9 +12,8 @@ const Sidebar: React.FC = () => {
     fetchUserData();
   }, [fetchUserData]);
 
-  // Utiliser la partie avant @gmail.com de l'email comme nom d'affichage
   const displayName = userData?.email ? userData.email.split('@gmail.com')[0] : 'Utilisateur';
-  const initial = displayName.charAt(0) || 'U'; // Initiale pour le placeholder
+  const initial = displayName.charAt(0) || 'U'; 
 
   const getLinkClasses = (path: string) => {
     const isActive = location.pathname === path;
@@ -24,7 +23,7 @@ const Sidebar: React.FC = () => {
   };
 
   return (
-    <aside className="w-64 h-screen bg-gray-800 text-white flex flex-col justify-between p-2 py-6">
+    <aside className="w-64 h-screen bg-gray-800 text-white flex flex-col justify-between p-5 fixed left-0">
       {/* Section haute (nom sans photo pour l'instant) */}
       <div className="flex flex-col items-center space-y-2 pt-7">
         <div className="w-20 h-20 rounded-full bg-gray-700 flex items-center justify-center text-gray-400">
