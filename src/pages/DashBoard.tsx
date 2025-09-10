@@ -21,7 +21,7 @@ const DashBoard: FC = () => {
 
   return (
     <>
-      <div className="flex">
+      <div className="flex w-full">
         {/*left sidebar*/}
         <SideBar />
         {/*Right sidebar*/}
