@@ -13,6 +13,7 @@ import {
 import toast from 'react-hot-toast';
 import { getMonthlySummary } from '../../utils/summary';
 import { barOptions, getBarData, getPieData, pieOptions } from '../../utils/chartConfig';
+import Button from '../Button/Button';
 
 // Register Chart.js components
 ChartJS.register(
@@ -90,7 +91,7 @@ const DashboardSummary = () => {
       {/* Header with Budget Alert */}
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-2xl font-bold text-gray-800">Dashboard & Monthly Summary</h2>
+          <h2 className="text-3xl font-spartan font-bold text-gray-800">Dashboard & Monthly Summary</h2>
           <p className="text-gray-600">
             {selectedDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
           </p>
@@ -113,7 +114,6 @@ const DashboardSummary = () => {
             </label>
             <input
               type="month"
-              value={selectedDate.toISOString().slice(0, 7)}
               onChange={handleDateChange}
               className="w-full p-2 border border-gray-300 rounded-md"
             />
@@ -136,12 +136,11 @@ const DashboardSummary = () => {
             </select>
           </div>
         </div>
-        <button
-          onClick={handleRefresh}
-          className="mt-4 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700"
-        >
-          Refresh Data
-        </button>
+
+        <Button
+          text='REFRESH DATA'
+          className='my-4'
+        />
       </div>
 
       {/* Summary Cards */}
@@ -149,7 +148,7 @@ const DashboardSummary = () => {
         <div className="bg-white p-4 rounded-lg shadow border-l-4 border-green-500">
           <h3 className="text-lg font-semibold text-gray-700">Total Income</h3>
           <p className="text-2xl font-bold text-green-600">
-            €{summary?.totalIncome?.toFixed(2) || '0.00'}
+            Ariary {summary?.totalIncome?.toFixed(2) || '0.00'}
           </p>
           <p className="text-sm text-gray-500">All income sources</p>
         </div>
@@ -157,7 +156,7 @@ const DashboardSummary = () => {
         <div className="bg-white p-4 rounded-lg shadow border-l-4 border-red-500">
           <h3 className="text-lg font-semibold text-gray-700">Total Expenses</h3>
           <p className="text-2xl font-bold text-red-600">
-            €{summary?.totalExpense?.toFixed(2) || '0.00'}
+            Ariary {summary?.totalExpense?.toFixed(2) || '0.00'}
           </p>
           <p className="text-sm text-gray-500">Including recurring expenses</p>
         </div>
@@ -167,7 +166,7 @@ const DashboardSummary = () => {
           <p className={`text-2xl font-bold ${
             summary?.balance >= 0 ? 'text-green-600' : 'text-red-600'
           }`}>
-            €{summary?.balance?.toFixed(2) || '0.00'}
+            Ariary {summary?.balance?.toFixed(2) || '0.00'}
           </p>
           <p className="text-sm text-gray-500">Income − Expenses</p>
         </div>
