@@ -12,32 +12,28 @@ import ConfirmModal from "../Form/ConfirmModal";
 const DashboardCategories: React.FC = () => {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [categoryToDelete, setCategoryToDelete] = useState<number | null>(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingCategory, setEditingCategory] = useState<UserCategory | null>(null);
 
   const userCategories = useUserStore((state) => state.userCategories);
   const fetchUserCategories = useUserStore((state) => state.fetchUserCategories);
 
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingCategory, setEditingCategory] = useState<UserCategory | null>(null);
-
-  // Charger les catégories au montage
   useEffect(() => {
     fetchUserCategories();
   }, [fetchUserCategories]);
 
-  // Supprimer une catégorie
-  const requestDelete = (id: number) => {
+  const handleDelete = (id: number) => {
     setCategoryToDelete(id);
     setIsConfirmOpen(true);
   };
 
-  const handleConfirmDelete = async () => {
+  const confirmDelete = async () => {
     if (categoryToDelete !== null) {
       try {
         await deleteCategory(categoryToDelete);
         toast.success("Category deleted successfully!");
-        await fetchUserCategories();
-      } catch (error) {
-        console.error(error);
+        fetchUserCategories();
+      } catch {
         toast.error("Failed to delete category.");
       } finally {
         setIsConfirmOpen(false);
@@ -46,139 +42,105 @@ const DashboardCategories: React.FC = () => {
     }
   };
 
-
-  // Ouvrir le formulaire pour ajouter ou éditer
   const handleEdit = (category?: UserCategory) => {
     setEditingCategory(category || null);
     setIsModalOpen(true);
   };
 
-  // ✅ userCategories est déjà un tableau
   const categories: UserCategory[] = userCategories || [];
 
   return (
-    <div className="w-full relative">
-      {/* Header Section */}
-      <div className="primary-color rounded-2xl shadow-lg p-8 mb-8 text-white">
-        <h1 className="text-5xl font-bold text-white font-spartan text-center mb-2">Your Categories</h1>
-        <p className="text-center  mb-6">
-          Organize your content with custom categories
-        </p>
+    <div className="p-6 space-y-6 w-full">
+      {/* Header */}
+      <div className="primary-color rounded-2xl shadow-lg p-6 flex flex-col md:flex-row justify-between items-center text-white">
+        <div>
+          <h1 className="text-4xl font-bold font-spartan mb-2">Your Categories</h1>
+          <p>Quick overview of all your categories and their stats</p>
+        </div>
+        <Button
+          text=""
+          onClick={() => handleEdit()}
+          bg_color="secondary"
+          size="lg"
+          className="mt-4 md:mt-0 inline-flex items-center justify-center hover:scale-105 transition-all duration-200 shadow-lg"
+        >
+          <FontAwesomeIcon icon={faPlus} className="mr-2" /> Add Category
+        </Button>
+      </div>
 
-        <div className="text-center">
-          <Button
-            text=""
-            onClick={() => handleEdit()}
-            bg_color="secondary"   // Utilise la couleur secondaire
-            size="lg"              // Taille large pour correspondre à px-6 py-3
-            className="inline-flex items-center justify-center hover:bg-blue-50 transform hover:scale-105 transition-all duration-200 shadow-lg"
-          >
-            <FontAwesomeIcon icon={faPlus} className="mr-2" />
-            Add New Category
-          </Button>
+      {/* Horizontal List / Table */}
+      <div className="overflow-x-auto">
+        <div className="min-w-[700px] bg-white/30 backdrop-blur-md rounded-xl shadow-lg p-4">
+          <div className="flex justify-between font-semibold text-gray-700 border-b border-gray-200 pb-2 mb-4">
+            <span className="w-1/4">Category Name</span>
+            <span className="w-1/4 hidden md:block">Items Count</span>
+            <span className="w-1/4 hidden md:block">Date Created</span>
+            <span className="w-1/4 text-right">Actions</span>
+          </div>
 
+          {categories.length > 0 ? (
+            categories.map((category) => (
+              <div
+                key={category.id}
+                className="flex justify-between items-center py-2 px-3 mb-2 bg-white/20 backdrop-blur-sm rounded-lg hover:bg-white/30 transition cursor-pointer"
+              >
+                <div className="flex items-center w-1/4 space-x-3">
+                  <div className="bg-blue-100 p-2 rounded-full">
+                    <FontAwesomeIcon icon={faFolder} className="text-gray-600" />
+                  </div>
+                  <span className="font-medium truncate">{category.name}</span>
+                </div>
+                <span className="w-1/4 hidden md:block text-gray-700">{category.itemsCount || 0}</span>
+                <span className="w-1/4 hidden md:block text-gray-500">
+                  {new Date(category.createdAt).toLocaleDateString()}
+                </span>
+                <div className="w-1/4 flex justify-end space-x-2">
+                  <Button
+                    text=""
+                    onClick={() => handleEdit(category)}
+                    bg_color="secondary"
+                    size="sm"
+                    className="flex items-center justify-center w-8 h-8 p-0"
+                  >
+                    <FontAwesomeIcon icon={faEdit} className="text-sm" />
+                  </Button>
+                  <Button
+                    text=""
+                    onClick={() => handleDelete(category.id)}
+                    bg_color="terty"
+                    size="sm"
+                    className="flex items-center justify-center w-8 h-8 p-0"
+                  >
+                    <FontAwesomeIcon icon={faTrash} className="text-sm" />
+                  </Button>
+                </div>
+              </div>
+            ))
+          ) : (
+            <div className="text-center py-8 text-gray-500">
+              <FontAwesomeIcon icon={faFolder} className="text-4xl mb-3" />
+              <p>No categories found. Start by creating one!</p>
+            </div>
+          )}
         </div>
       </div>
 
-      {/* Categories Grid */}
-      <div className="categories-grid">
-        {categories.length > 0 ? (
-          <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-            {categories.map((category) => (
-              <div
-                key={category.id}
-                className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 overflow-hidden group"
-              >
-                {/* Card Header */}
-                <div className="bg-gradient-to-r from-gray-50 to-blue-50 p-4 border-b border-gray-100">
-                  <div className="flex items-center justify-center mb-3">
-                    <div className="bg-blue-100 p-3 rounded-full">
-                      <FontAwesomeIcon
-                        icon={faFolder}
-                        className="text-gray text-3xl"
-                      />
-                    </div>
-                  </div>
-                </div>
-
-                {/* Card Body */}
-                <div className="p-6">
-                  <h3 className="text-lg font-semibold text-gray capitalize text-center mb-4 truncate">
-                    {category.name}
-                  </h3>
-
-                  {/* Action Buttons */}
-                  <div className="flex justify-center space-x-3">
-                    <Button
-                      text=""
-                      onClick={() => handleEdit(category)}
-                      bg_color="secondary"
-                      size="sm"
-                      className="flex items-center justify-center w-10 h-10 p-0"
-                    >
-                      <FontAwesomeIcon icon={faEdit} className="text-sm" />
-                    </Button>
-
-
-                    <Button
-                      text=""
-                      onClick={() => requestDelete(category.id)}
-                      bg_color="terty"
-                      size="sm"
-                      className="flex items-center justify-center w-10 h-10 p-0"
-                    >
-                      <FontAwesomeIcon icon={faTrash} className="text-sm" />
-                    </Button>
-
-
-                  </div>
-                </div>
-
-               
-              </div>
-            ))}
-          </div>
-        ) : (
-          // Empty State
-          <div className="text-center py-8">
-            <div className="bg-gray-100 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6">
-              <FontAwesomeIcon icon={faFolder} className="text-gray text-3xl" />
-            </div>
-            <h3 className="text-xl font-semibold text-red mb-2">
-              No Categories Yet
-            </h3>
-            <p className="text-gray-500 mb-6 max-w-md mx-auto">
-              Get started by creating your first category to organize your content effectively.
-            </p>
-            <Button
-              text="Create Your First Category"
-              onClick={() => handleEdit()}
-              bg_color="primary"
-              size="lg"
-              className="inline-flex items-center justify-center"
-            >
-              <FontAwesomeIcon icon={faPlus} className="ml-2" />
-            </Button>
-
-          </div>
-        )}
-      </div>
-        {/* Modal pour ajouter/éditer la catégorie */}
-        {isModalOpen && (
-          <CategoryForm
-            category={editingCategory}
-            onClose={() => setIsModalOpen(false)}
-            afterSubmit={() => fetchUserCategories()}
-          />
-        )}
-
-        {/* ✅ Modal de confirmation de suppression */}
-        <ConfirmModal
-          isOpen={isConfirmOpen}
-          message="Are you sure you want to delete this category?"
-          onConfirm={handleConfirmDelete}
-          onCancel={() => setIsConfirmOpen(false)}
+      {/* Modal Form */}
+      {isModalOpen && (
+        <CategoryForm
+          category={editingCategory}
+          onClose={() => setIsModalOpen(false)}
+          afterSubmit={fetchUserCategories}
         />
+      )}
+
+      {/* Confirm Delete */}
+      <ConfirmModal
+        isOpen={isConfirmOpen}
+        message="Are you sure you want to delete this category?"
+        onConfirm={confirmDelete}
+        onCancel={() => setIsConfirmOpen(false)}
+      />
     </div>
   );
 };
