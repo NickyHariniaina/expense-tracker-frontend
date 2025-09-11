@@ -21,7 +21,7 @@ const Auth: React.FC = () => {
 
       <div className="flex flex-row justify-between items-center relative z-10">
         {/* Left side */}
-        <div className="flex flex-col mt-32 ml-12 w-1/2 gap-4 items-start justify-center bg-transparent">
+        <div className="flex flex-col mt-10 ml-12 w-1/2 gap-4 items-start justify-center bg-transparent">
           {/* Logo */}
           <div className="mb-6">
             <Logo size={100} />
@@ -41,11 +41,11 @@ const Auth: React.FC = () => {
             Your money. Your plan. Your growth.
           </p>
 
-          <img
-            src={expenseAuthImage}
-            alt="Finance dashboard"
-            className="animate-pulse w-40 rounded-2xl items-center relative z-1000"
-          />
+          {/* <img */}
+          {/*   src={expenseAuthImage} */}
+          {/*   alt="Finance dashboard" */}
+          {/*   className="animate-pulse w-40 rounded-2xl items-center relative z-1000" */}
+          {/* /> */}
         </div>
         {/* Right side - Login Form */}
         <div className="w-1/2 h-full flex items-center justify-end">
@@ -59,7 +59,7 @@ const Auth: React.FC = () => {
           }
         </div>
       </div>
-      <Banner></Banner>
+      {/* <Banner></Banner> */}
     </div>
   );
 };
