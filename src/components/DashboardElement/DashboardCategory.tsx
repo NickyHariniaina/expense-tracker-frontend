@@ -9,31 +9,41 @@ import toast from "react-hot-toast";
 import Button from "../Button/Button";
 import ConfirmModal from "../Form/ConfirmModal";
 
+// gradient color
+const gradientColors = [
+  "from-[#0EA5E9]/30 to-[#0EA5E9]/60",
+  "from-[#EF4444]/30 to-[#EF4444]/60",
+  "from-[#059669]/30 to-[#059669]/60",
+  "from-[#FACC15]/30 to-[#FACC15]/60",
+  "from-[#8B5CF6]/30 to-[#8B5CF6]/60",
+];
+
+
 const DashboardCategories: React.FC = () => {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [categoryToDelete, setCategoryToDelete] = useState<number | null>(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [editingCategory, setEditingCategory] = useState<UserCategory | null>(null);
-
   const userCategories = useUserStore((state) => state.userCategories);
   const fetchUserCategories = useUserStore((state) => state.fetchUserCategories);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [editingCategory, setEditingCategory] = useState<UserCategory | null>(null);
 
   useEffect(() => {
     fetchUserCategories();
   }, [fetchUserCategories]);
 
-  const handleDelete = (id: number) => {
+  const requestDelete = (id: number) => {
     setCategoryToDelete(id);
     setIsConfirmOpen(true);
   };
 
-  const confirmDelete = async () => {
+  const handleConfirmDelete = async () => {
     if (categoryToDelete !== null) {
       try {
         await deleteCategory(categoryToDelete);
         toast.success("Category deleted successfully!");
-        fetchUserCategories();
-      } catch {
+        await fetchUserCategories();
+      } catch (error) {
+        console.error(error);
         toast.error("Failed to delete category.");
       } finally {
         setIsConfirmOpen(false);
@@ -50,95 +60,114 @@ const DashboardCategories: React.FC = () => {
   const categories: UserCategory[] = userCategories || [];
 
   return (
-    <div className="p-6 space-y-6 w-full">
-      {/* Header */}
-      <div className="primary-color rounded-2xl shadow-lg p-6 flex flex-col md:flex-row justify-between items-center text-white">
-        <div>
-          <h1 className="text-4xl font-bold font-spartan mb-2">Your Categories</h1>
-          <p>Quick overview of all your categories and their stats</p>
+    <div className="w-full p-6">
+      {/* Banner */}
+      <div className="primary-color rounded-2xl shadow-lg p-8 mb-8 text-white">
+        <h1 className="text-5xl font-bold text-white font-spartan text-center mb-2">
+          Your Categories
+        </h1>
+        <p className="text-center mb-6">
+          Organize your content with custom categories
+        </p>
+        <div className="text-center">
+          <Button
+            text=""
+            onClick={() => handleEdit()}
+            bg_color="secondary"
+            size="lg"
+            className="inline-flex items-center justify-center hover:bg-blue-50 transform hover:scale-105 transition-all duration-200 shadow-lg"
+          >
+            <FontAwesomeIcon icon={faPlus} className="mr-2" />
+            Add New Category
+          </Button>
         </div>
-        <Button
-          text=""
-          onClick={() => handleEdit()}
-          bg_color="secondary"
-          size="lg"
-          className="mt-4 md:mt-0 inline-flex items-center justify-center hover:scale-105 transition-all duration-200 shadow-lg"
-        >
-          <FontAwesomeIcon icon={faPlus} className="mr-2" /> Add Category
-        </Button>
       </div>
 
-      {/* Horizontal List / Table */}
-      <div className="overflow-x-auto">
-        <div className="min-w-[700px] bg-white/30 backdrop-blur-md rounded-xl shadow-lg p-4">
-          <div className="flex justify-between font-semibold text-gray-700 border-b border-gray-200 pb-2 mb-4">
-            <span className="w-1/4">Category Name</span>
-            <span className="w-1/4 hidden md:block">Items Count</span>
-            <span className="w-1/4 hidden md:block">Date Created</span>
-            <span className="w-1/4 text-right">Actions</span>
-          </div>
-
-          {categories.length > 0 ? (
-            categories.map((category) => (
-              <div
-                key={category.id}
-                className="flex justify-between items-center py-2 px-3 mb-2 bg-white/20 backdrop-blur-sm rounded-lg hover:bg-white/30 transition cursor-pointer"
-              >
-                <div className="flex items-center w-1/4 space-x-3">
-                  <div className="bg-blue-100 p-2 rounded-full">
-                    <FontAwesomeIcon icon={faFolder} className="text-gray-600" />
+      {/* Categories Grid */}
+      <div className="categories-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
+        {categories.length > 0 ? (
+          categories.map((category, index) => (
+            <div
+              key={category.id}
+              className={`p-4 rounded-2xl backdrop-blur-md bg-gradient-to-r ${gradientColors[index % gradientColors.length]} shadow-md hover:shadow-lg hover:scale-105 transform transition-all duration-300 flex flex-col justify-between`}
+            >
+              {/* Header: Icon + Name */}
+              <div className="flex justify-between items-center mb-2">
+                <div className="flex items-center space-x-2 overflow-hidden">
+                  <div className="bg-white/30 backdrop-blur-sm p-2 rounded-full flex-shrink-0">
+                    <FontAwesomeIcon icon={faFolder} className="text-white text-lg" />
                   </div>
-                  <span className="font-medium truncate">{category.name}</span>
+                  <h3 className="text-white font-semibold text-base truncate max-w-[100px] sm:max-w-[120px]">
+                    {category.name}
+                  </h3>
                 </div>
-                <span className="w-1/4 hidden md:block text-gray-700">{category.itemsCount || 0}</span>
-                <span className="w-1/4 hidden md:block text-gray-500">
-                  {new Date(category.createdAt).toLocaleDateString()}
-                </span>
-                <div className="w-1/4 flex justify-end space-x-2">
+
+                {/* Edit/Delete */}
+                <div className="flex space-x-1 flex-shrink-0">
                   <Button
                     text=""
                     onClick={() => handleEdit(category)}
                     bg_color="secondary"
                     size="sm"
-                    className="flex items-center justify-center w-8 h-8 p-0"
+                    className="flex items-center justify-center w-7 h-7 p-0"
                   >
-                    <FontAwesomeIcon icon={faEdit} className="text-sm" />
+                    <FontAwesomeIcon icon={faEdit} className="text-xs text-white" />
                   </Button>
                   <Button
                     text=""
-                    onClick={() => handleDelete(category.id)}
+                    onClick={() => requestDelete(category.id)}
                     bg_color="terty"
                     size="sm"
-                    className="flex items-center justify-center w-8 h-8 p-0"
+                    className="flex items-center justify-center w-7 h-7 p-0"
                   >
-                    <FontAwesomeIcon icon={faTrash} className="text-sm" />
+                    <FontAwesomeIcon icon={faTrash} className="text-xs text-white" />
                   </Button>
                 </div>
               </div>
-            ))
-          ) : (
-            <div className="text-center py-8 text-gray-500">
-              <FontAwesomeIcon icon={faFolder} className="text-4xl mb-3" />
-              <p>No categories found. Start by creating one!</p>
+
+              {/* Footer: Mini-stats */}
+              <div className="flex justify-between mt-2 text-xs text-white">
+                <span>Created: {new Date().toLocaleDateString()}</span>
+              </div>
             </div>
-          )}
-        </div>
+          ))
+        ) : (
+          // Empty State
+          <div className="col-span-full text-center py-12">
+            <div className="bg-gray-100 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-4">
+              <FontAwesomeIcon icon={faFolder} className="text-gray text-3xl" />
+            </div>
+            <h3 className="text-xl font-semibold text-red mb-2">
+              No Categories Yet
+            </h3>
+            <p className="text-gray-500 mb-6 max-w-md mx-auto">
+              Get started by creating your first category to organize your content effectively.
+            </p>
+            <Button
+              text="Create Your First Category"
+              onClick={() => handleEdit()}
+              bg_color="primary"
+              size="lg"
+              className="inline-flex items-center justify-center"
+            >
+              <FontAwesomeIcon icon={faPlus} className="ml-2" />
+            </Button>
+          </div>
+        )}
       </div>
 
-      {/* Modal Form */}
+      {/* Modals */}
       {isModalOpen && (
         <CategoryForm
           category={editingCategory}
           onClose={() => setIsModalOpen(false)}
-          afterSubmit={fetchUserCategories}
+          afterSubmit={() => fetchUserCategories()}
         />
       )}
-
-      {/* Confirm Delete */}
       <ConfirmModal
         isOpen={isConfirmOpen}
         message="Are you sure you want to delete this category?"
-        onConfirm={confirmDelete}
+        onConfirm={handleConfirmDelete}
         onCancel={() => setIsConfirmOpen(false)}
       />
     </div>
