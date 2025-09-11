@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { NavLink, useLocation } from 'react-router-dom';
 import { FaHome, FaMoneyBill, FaWallet, FaChartBar, FaList } from 'react-icons/fa';
-import {FaSackDollar} from 'react-icons/fa6'
+import { FaSackDollar } from 'react-icons/fa6';
 import { useUserStore } from '../../store/user'; // Ajuste le chemin selon ton projet
 
 const Sidebar: React.FC = () => {
@@ -18,18 +18,18 @@ const Sidebar: React.FC = () => {
   const getLinkClasses = (path: string) => {
     const isActive = location.pathname === path;
     return `flex items-center space-x-2 px-4 py-4 rounded-lg transition-colors ${
-      isActive ? 'bg-blue-600 text-white font-semibold' : 'text-gray-300 hover:bg-gray-700'
+      isActive ? 'secondary-color text-white font-semibold' : 'neutraly-color text-white hover:bg-secondary-color hover:text-white hover:font-semibold'
     }`;
   };
 
   return (
-    <aside className="w-64 h-screen neutraly-color text-white flex flex-col justify-between p-5 fixed left-0">
+    <aside className="w-64 h-screen bg-white flex flex-col gap-20 p-5 fixed left-0">
       {/* Section haute (nom sans photo pour l'instant) */}
-      <div className="flex flex-col items-center space-y-2 pt-7">
-        <div className="w-20 h-20 rounded-full primary-color flex items-center uppercase text-2xl justify-center font-bold text-gray-400">
+      <div className="flex flex-col items-center space-y-2">
+        <div className="w-20 h-20 rounded-full primary-color flex items-center uppercase text-2xl justify-center font-bold text-white">
           {initial}
         </div>
-        <p className="text-1xl font-medium capitalize">{displayName}</p>
+        <p className="text-xl font-medium capitalize text-green">{displayName}</p>
       </div>
 
       {/* Navigation */}
