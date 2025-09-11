@@ -4,20 +4,17 @@ import Button from "../components/Button/Button";
 import Logo from "../components/Logo/Logo";
 import ParticleBackground from "../components/ParticuleBackground";
 import { useUserStore } from "../store/user";
-import { useFetchBasicUser } from "../hooks/useFetchBasicData";
 
 export default function Start() {
   const navigate = useNavigate();
-  const { userData } = useUserStore();
-
-  useFetchBasicUser();
-  console.log(userData);
+  const { userCategories, fetchUserCategories } = useUserStore();
 
   useEffect(() => {
-    if (userData != null) {
+    fetchUserCategories();
+    if (userCategories != null) {
       navigate("/dashboard");
     }
-  }, [userData, navigate]);
+  }, [userCategories, navigate]);
 
   const handleClick = () => {
     navigate("/auth");
