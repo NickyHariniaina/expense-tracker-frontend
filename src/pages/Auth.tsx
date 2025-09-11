@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import Logo from "../components/Logo/Logo";
 import expenseAuthImage from "../assets/expense-auth.svg";
 import ParticleBackground from "../components/ParticuleBackground";
