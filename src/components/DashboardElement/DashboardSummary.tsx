@@ -32,6 +32,7 @@ const DashboardSummary = () => {
   const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedCategory, setSelectedCategory] = useState('all');
+  const [tempMonth, setTempMonth] = useState('');
 
   useEffect(() => {
     fetchSummary();
@@ -40,6 +41,19 @@ const DashboardSummary = () => {
   useEffect(() => {
     checkBudgetAlerts();
   }, [summary]);
+
+  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTempMonth(event.target.value);
+  };
+
+  const handleMonthBlur = () => {
+    if (tempMonth && tempMonth.length === 7) {
+      const newDate = new Date(tempMonth + '-01T00:00:00');
+      if (!isNaN(newDate.getTime())) {
+        setSelectedDate(newDate);
+      }
+    }
+  };
 
   const fetchSummary = async () => {
     try {
@@ -61,13 +75,6 @@ const DashboardSummary = () => {
         `You've exceeded your budget for this month by €${overspendAmount.toFixed(2)}`,
         { duration: 6000 }
       );
-    }
-  };
-
-  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedMonth = event.target.value;
-    if (selectedMonth) {
-      setSelectedDate(new Date(selectedMonth + '-01T00:00:00'));
     }
   };
 
@@ -107,14 +114,13 @@ const DashboardSummary = () => {
             <label className="block text-sm font-medium mb-2 text-gray-800">Select Month</label>
             <input
               type="month"
+              value={tempMonth}
               onChange={handleDateChange}
-              className="w-full p-3 rounded-lg 
-              bg-white/20 backdrop-blur-sm 
-              border border-white/30 
-              focus:outline-none focus:ring-2 focus:ring-blue-400 
-              text-gray-900 placeholder-gray-400"
-              placeholder="Select month"
+              onBlur={handleMonthBlur}
+              placeholder='Example : 2018-03'
+              className="w-full p-2 border border-gray-300 rounded-md"
             />
+
           </div>
           <div>
             <label className="block text-sm font-medium mb-2 text-gray-800">Filter by Category</label>

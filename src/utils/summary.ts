@@ -2,8 +2,10 @@ import toast from "react-hot-toast";
 
 export const getMonthlySummary = async (date: Date) => {
   try {
+    const month = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
+    
     const res = await fetch(
-      "http://localhost:3000/api/summary/monthly?month=" + date,
+      `http://localhost:3000/api/summary/monthly?month=${month}`,
       {
         method: "GET",
         credentials: "include",
