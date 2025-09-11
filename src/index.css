@@ -33,10 +33,8 @@ background-color: #EF4444;
   color: #EF4444;
 }
 .text-gray{
-  color:#374151;
+  color:#92b6ef;
 }
-
-
 .slide-in-left {
   animation: slideInLeft 0.5s ease-in-out forwards;
 }
