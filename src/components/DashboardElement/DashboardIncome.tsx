@@ -116,7 +116,7 @@ const DashboardIncome: React.FC = () => {
             <IncomeForm
               income={selectedIncome}
               onClose={() => setIsFormOpen(false)}
-              afterSubmit={fetchUserIncomes} // ⚡ Rafraîchit la liste après submit
+              afterSubmit={fetchUserIncomes}
             />
           </div>
         </div>
