@@ -37,8 +37,8 @@ const DashboardSummary = () => {
   const [summary, setSummary] = useState<UserSummary>(null);
   const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [selectedCategory, setSelectedCategory] = useState('all');
-  const [tempMonth, setTempMonth] = useState('');
+  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [tempMonth, setTempMonth] = useState("");
 
   useEffect(() => {
     fetchSummary();
@@ -54,7 +54,7 @@ const DashboardSummary = () => {
 
   const handleMonthBlur = () => {
     if (tempMonth && tempMonth.length === 7) {
-      const newDate = new Date(tempMonth + '-01T00:00:00');
+      const newDate = new Date(tempMonth + "-01T00:00:00");
       if (!isNaN(newDate.getTime())) {
         setSelectedDate(newDate);
       }
@@ -64,7 +64,9 @@ const DashboardSummary = () => {
   const fetchSummary = async () => {
     try {
       setLoading(true);
-      const formattedDate = selectedDate.toISOString().split("T")[0];
+      const year = selectedDate.getFullYear();
+      const month = String(selectedDate.getMonth() + 1).padStart(2, "0");
+      const formattedDate = `${year}-${month}`;
       const data = await getMonthlySummary(formattedDate);
       if (data) setSummary(data);
     } catch (error) {
@@ -97,10 +99,12 @@ const DashboardSummary = () => {
   const handleRefresh = () => fetchSummary();
 
   const filteredExpenses = summary?.expensesByCategory
-  ? selectedCategory === "all"
-    ? summary.expensesByCategory
-    : { [selectedCategory]: summary.expensesByCategory[selectedCategory] || 0 }
-  : {};
+    ? selectedCategory === "all"
+      ? summary.expensesByCategory
+      : {
+          [selectedCategory]: summary.expensesByCategory[selectedCategory] || 0,
+        }
+    : {};
 
   if (loading) return <Loading />;
 
@@ -143,10 +147,9 @@ const DashboardSummary = () => {
               value={tempMonth}
               onChange={handleDateChange}
               onBlur={handleMonthBlur}
-              placeholder='Example : 2018-03'
+              placeholder="Example : 2018-03"
               className="w-full p-2 border border-gray-300 rounded-md"
             />
-
           </div>
         </div>
         <Button text="REFRESH DATA" className="mt-4" onClick={handleRefresh} />
