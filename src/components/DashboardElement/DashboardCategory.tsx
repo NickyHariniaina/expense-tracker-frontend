@@ -9,22 +9,28 @@ import toast from "react-hot-toast";
 import Button from "../Button/Button";
 import ConfirmModal from "../Form/ConfirmModal";
 
+// gradient color
+const gradientColors = [
+  "from-[#0EA5E9]/30 to-[#0EA5E9]/60",
+  "from-[#EF4444]/30 to-[#EF4444]/60",
+  "from-[#059669]/30 to-[#059669]/60",
+  "from-[#FACC15]/30 to-[#FACC15]/60",
+  "from-[#8B5CF6]/30 to-[#8B5CF6]/60",
+];
+
+
 const DashboardCategories: React.FC = () => {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [categoryToDelete, setCategoryToDelete] = useState<number | null>(null);
-
   const userCategories = useUserStore((state) => state.userCategories);
   const fetchUserCategories = useUserStore((state) => state.fetchUserCategories);
-
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [editingCategory, setEditingCategory] = useState<UserCategory | null>(null);
 
-  // Charger les catégories au montage
   useEffect(() => {
     fetchUserCategories();
   }, [fetchUserCategories]);
 
-  // Supprimer une catégorie
   const requestDelete = (id: number) => {
     setCategoryToDelete(id);
     setIsConfirmOpen(true);
@@ -46,102 +52,89 @@ const DashboardCategories: React.FC = () => {
     }
   };
 
-
-  // Ouvrir le formulaire pour ajouter ou éditer
   const handleEdit = (category?: UserCategory) => {
     setEditingCategory(category || null);
     setIsModalOpen(true);
   };
 
-  // ✅ userCategories est déjà un tableau
   const categories: UserCategory[] = userCategories || [];
 
   return (
-    <div className="w-full relative">
-      {/* Header Section */}
+    <div className="w-full p-6">
+      {/* Banner */}
       <div className="primary-color rounded-2xl shadow-lg p-8 mb-8 text-white">
-        <h1 className="text-5xl font-bold text-white font-spartan text-center mb-2">Your Categories</h1>
-        <p className="text-center  mb-6">
+        <h1 className="text-5xl font-bold text-white font-spartan text-center mb-2">
+          Your Categories
+        </h1>
+        <p className="text-center mb-6">
           Organize your content with custom categories
         </p>
-
         <div className="text-center">
           <Button
             text=""
             onClick={() => handleEdit()}
-            bg_color="secondary"   // Utilise la couleur secondaire
-            size="lg"              // Taille large pour correspondre à px-6 py-3
+            bg_color="secondary"
+            size="lg"
             className="inline-flex items-center justify-center hover:bg-blue-50 transform hover:scale-105 transition-all duration-200 shadow-lg"
           >
             <FontAwesomeIcon icon={faPlus} className="mr-2" />
             Add New Category
           </Button>
-
         </div>
       </div>
 
       {/* Categories Grid */}
-      <div className="categories-grid">
+      <div className="categories-grid grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6">
         {categories.length > 0 ? (
-          <div className="grid grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-            {categories.map((category) => (
-              <div
-                key={category.id}
-                className="bg-white rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 transform hover:-translate-y-1 border border-gray-100 overflow-hidden group"
-              >
-                {/* Card Header */}
-                <div className="bg-gradient-to-r from-gray-50 to-blue-50 p-4 border-b border-gray-100">
-                  <div className="flex items-center justify-center mb-3">
-                    <div className="bg-blue-100 p-3 rounded-full">
-                      <FontAwesomeIcon
-                        icon={faFolder}
-                        className="text-gray text-3xl"
-                      />
-                    </div>
+          categories.map((category, index) => (
+            <div
+              key={category.id}
+              className={`p-4 rounded-2xl backdrop-blur-md bg-gradient-to-r ${gradientColors[index % gradientColors.length]} shadow-md hover:shadow-lg hover:scale-105 transform transition-all duration-300 flex flex-col justify-between`}
+            >
+              {/* Header: Icon + Name */}
+              <div className="flex justify-between items-center mb-2">
+                <div className="flex items-center space-x-2 overflow-hidden">
+                  <div className="bg-white/30 backdrop-blur-sm p-2 rounded-full flex-shrink-0">
+                    <FontAwesomeIcon icon={faFolder} className="text-white text-lg" />
                   </div>
-                </div>
-
-                {/* Card Body */}
-                <div className="p-6">
-                  <h3 className="text-lg font-semibold text-gray capitalize text-center mb-4 truncate">
+                  <h3 className="text-white font-semibold text-base truncate max-w-[100px] sm:max-w-[120px]">
                     {category.name}
                   </h3>
-
-                  {/* Action Buttons */}
-                  <div className="flex justify-center space-x-3">
-                    <Button
-                      text=""
-                      onClick={() => handleEdit(category)}
-                      bg_color="secondary"
-                      size="sm"
-                      className="flex items-center justify-center w-10 h-10 p-0"
-                    >
-                      <FontAwesomeIcon icon={faEdit} className="text-sm" />
-                    </Button>
-
-
-                    <Button
-                      text=""
-                      onClick={() => requestDelete(category.id)}
-                      bg_color="terty"
-                      size="sm"
-                      className="flex items-center justify-center w-10 h-10 p-0"
-                    >
-                      <FontAwesomeIcon icon={faTrash} className="text-sm" />
-                    </Button>
-
-
-                  </div>
                 </div>
 
-               
+                {/* Edit/Delete */}
+                <div className="flex space-x-1 flex-shrink-0">
+                  <Button
+                    text=""
+                    onClick={() => handleEdit(category)}
+                    bg_color="secondary"
+                    size="sm"
+                    className="flex items-center justify-center w-7 h-7 p-0"
+                  >
+                    <FontAwesomeIcon icon={faEdit} className="text-xs text-white" />
+                  </Button>
+                  <Button
+                    text=""
+                    onClick={() => requestDelete(category.id)}
+                    bg_color="terty"
+                    size="sm"
+                    className="flex items-center justify-center w-7 h-7 p-0"
+                  >
+                    <FontAwesomeIcon icon={faTrash} className="text-xs text-white" />
+                  </Button>
+                </div>
               </div>
-            ))}
-          </div>
+
+              {/* Footer: Mini-stats */}
+              <div className="flex justify-between mt-2 text-xs text-white">
+                <span>Created: {new Date().toLocaleDateString()}</span>
+              </div>
+            </div>
+          ))
         ) : (
           // Empty State
-          <div className="text-center py-8">
-            <div className="bg-gray-100 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-6">
+          <div className="col-span-full text-center py-12">
+            <div className="bg-gray-100 rounded-full w-24 h-24 flex items-center justify-center mx-auto mb-4">
               <FontAwesomeIcon icon={faFolder} className="text-gray text-3xl" />
             </div>
             <h3 className="text-xl font-semibold text-red mb-2">
@@ -159,26 +152,24 @@ const DashboardCategories: React.FC = () => {
             >
               <FontAwesomeIcon icon={faPlus} className="ml-2" />
             </Button>
-
           </div>
         )}
       </div>
-        {/* Modal pour ajouter/éditer la catégorie */}
-        {isModalOpen && (
-          <CategoryForm
-            category={editingCategory}
-            onClose={() => setIsModalOpen(false)}
-            afterSubmit={() => fetchUserCategories()}
-          />
-        )}
 
-        {/* ✅ Modal de confirmation de suppression */}
-        <ConfirmModal
-          isOpen={isConfirmOpen}
-          message="Are you sure you want to delete this category?"
-          onConfirm={handleConfirmDelete}
-          onCancel={() => setIsConfirmOpen(false)}
+      {/* Modals */}
+      {isModalOpen && (
+        <CategoryForm
+          category={editingCategory}
+          onClose={() => setIsModalOpen(false)}
+          afterSubmit={() => fetchUserCategories()}
         />
+      )}
+      <ConfirmModal
+        isOpen={isConfirmOpen}
+        message="Are you sure you want to delete this category?"
+        onConfirm={handleConfirmDelete}
+        onCancel={() => setIsConfirmOpen(false)}
+      />
     </div>
   );
 };
