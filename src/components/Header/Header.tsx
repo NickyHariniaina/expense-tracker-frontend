@@ -7,7 +7,6 @@ const Header: React.FC = () => {
     const location = useLocation();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isWideScreen, setIsWideScreen] = useState(window.innerWidth > 600);
-    const navigate = useNavigate();
 
   const navigate = useNavigate();
   const handleLogout = async () => {
