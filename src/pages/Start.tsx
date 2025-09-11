@@ -11,9 +11,10 @@ export default function Start() {
   const { userData } = useUserStore();
 
   useFetchBasicUser();
+  console.log(userData);
 
   useEffect(() => {
-    if (userData) {
+    if (userData != null) {
       navigate("/dashboard");
     }
   }, [userData, navigate]);

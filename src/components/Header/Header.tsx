@@ -1,11 +1,18 @@
 import React, { useState, useEffect } from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { FaBell, FaUserCog, FaUser, FaCog, FaSignOutAlt } from "react-icons/fa";
+import { logout } from "../../utils/auth";
 
 const Header: React.FC = () => {
   const location = useLocation();
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
   const [isWideScreen, setIsWideScreen] = useState(window.innerWidth > 600);
+
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    await logout();
+    navigate("/");
+  };
 
   useEffect(() => {
     const handleResize = () => setIsWideScreen(window.innerWidth > 600);
@@ -65,13 +72,12 @@ const Header: React.FC = () => {
                   </NavLink>
                 </li>
                 <li>
-                  <NavLink
-                    to="/auth"
+                  <button
                     className={getLinkClasses("/dashboard/logout")}
-                    onClick={toggleDropdown}
+                    onClick={handleLogout}
                   >
                     <FaSignOutAlt className="size-5" /> <span>Logout</span>
-                  </NavLink>
+                  </button>
                 </li>
               </ul>
             )}

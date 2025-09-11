@@ -18,6 +18,7 @@ interface UserState {
   fetchUserExpenses: () => Promise<void>;
   fetchUserIncomes: () => Promise<void>;
   fetchUserSummary: () => Promise<void>;
+  resetUserStore: () => void;
 }
 
 // BASE_URL, should be put in the env later
@@ -62,15 +63,14 @@ export const useUserStore = create<UserState>((set, get) => ({
         headers: { "Content-type": "application/json" },
       });
       const result = await response.json();
-  
+
       if (response.status !== 200) throw new Error("Server error");
-  
+
       set({ userCategories: result.data });
     } catch (error) {
       console.log(error);
     }
   },
-  
 
   fetchUserExpenses: async () => {
     try {
@@ -106,14 +106,14 @@ export const useUserStore = create<UserState>((set, get) => ({
       });
       const result = await response.json();
       if (response.status !== 200) throw new Error("Server error");
-        set({
-        userIncomes: result.data || result, 
+      set({
+        userIncomes: result.data || result,
       });
     } catch (error) {
       console.error(error);
     }
   },
-  
+
   fetchUserSummary: async (
     startDate: Date | undefined = get().userData?.start_date,
   ) => {
@@ -138,5 +138,14 @@ export const useUserStore = create<UserState>((set, get) => ({
     } catch (error) {
       console.log(error);
     }
+  },
+  resetUserStore: () => {
+    set({
+      userData: null,
+      userSummary: null,
+      userCategories: null,
+      userExpenses: null,
+      userIncomes: null,
+    });
   },
 }));

@@ -1,4 +1,5 @@
 import toast from "react-hot-toast";
+import { useUserStore } from "../store/user";
 
 export const login = async (email: string, password: string) => {
   try {
@@ -81,7 +82,7 @@ export const refresh = async () => {
 
 export const logout = async () => {
   try {
-    const res = await fetch("http://localohost:3000/api/auth/logout", {
+    const res = await fetch("http://localhost:3000/api/auth/logout", {
       method: "POST",
       credentials: "include",
       headers: {
@@ -89,12 +90,15 @@ export const logout = async () => {
       },
     });
 
+    const { resetUserStore } = useUserStore.getState();
     if (res.status === 200) {
+      resetUserStore();
       toast.success("User logged out successfully.");
     } else if (res.status === 500) {
       toast.error("Internal Server Error");
     }
   } catch (error) {
     toast.error("Network Error.");
+    console.log(error);
   }
 };
