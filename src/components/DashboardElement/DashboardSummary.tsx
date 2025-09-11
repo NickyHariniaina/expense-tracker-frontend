@@ -11,7 +11,7 @@ import {
   Legend,
 } from "chart.js";
 import toast from "react-hot-toast";
-import { getMonthlySummary } from "../../utils/summary";
+import { getAlert, getMonthlySummary } from "../../utils/summary";
 import {
   barOptions,
   getBarData,
@@ -61,13 +61,9 @@ const DashboardSummary = () => {
     }
   };
 
-  const checkBudgetAlerts = () => {
-    if (summary && summary.totalExpense > summary.totalIncome) {
-      const overspendAmount = summary.totalExpense - summary.totalIncome;
-      toast.error(
-        `You've exceeded your budget for this month by €${overspendAmount.toFixed(2)}`,
-        { duration: 6000 },
-      );
+  const checkBudgetAlerts = async () => {
+    if (summary?.balance != null && summary?.balance < 0) {
+      await getAlert();
     }
   };
 

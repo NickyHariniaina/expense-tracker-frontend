@@ -10,7 +10,7 @@ export const getMonthlySummary = async (date: String) => {
       },
     );
     if (res.status === 200) {
-      toast.success("Monthly summary retrieved 📅");
+      toast.success("Monthly summary retrieved 📅", { id: "summary" });
 
       const data = await res.json();
       return data;
@@ -33,7 +33,9 @@ export const getAlert = async () => {
       credentials: "include",
     });
     const data = await res.json();
-    toast.success(data.message);
+    toast.error(data.message, {
+      id: "alert",
+    });
   } catch (error) {
     console.log(error);
   }
