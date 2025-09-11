@@ -2,22 +2,22 @@ import React, { useState, useEffect } from "react";
 import type { UserCategory, UserExpense } from "../../types/user";
 
 interface ExpenseFormProps {
-    onClose: () => void;
-    onSubmit: (formData: FormData) => void;
-    userCategories: UserCategory[];
-    expense?: UserExpense | null; // <-- accepte null
-  }
-  
+  onClose: () => void;
+  onSubmit: (formData: FormData) => void;
+  userCategories: UserCategory[];
+  expense?: UserExpense | null;
+}
+
 interface FormState {
   description: string;
   amount: string;
   type: boolean;
   date: string;
-  startDate: string;
-  endDate: string;
+  start_date: string;
+  end_date: string;
   categoryId: string;
-  receipt: File | string | null;
-  creationDate: Date;
+  receipt: string | File | null;
+  creation_date: Date; // Changé de creationDate à creation_date
 }
 
 const ExpenseForm: React.FC<ExpenseFormProps> = ({
@@ -31,15 +31,15 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
     amount: expense?.amount?.toString() || "",
     type: expense?.type ?? false,
     date: expense?.date ? new Date(expense.date).toISOString().split("T")[0] : "",
-    startDate: expense?.start_date
+    start_date: expense?.start_date
       ? new Date(expense.start_date).toISOString().split("T")[0]
       : "",
-    endDate: expense?.end_date
+    end_date: expense?.end_date
       ? new Date(expense.end_date).toISOString().split("T")[0]
       : "",
     categoryId: expense?.category_id?.toString() || "",
     receipt: expense?.receipt || null,
-    creationDate: expense?.creationDate || new Date(),
+    creation_date: expense?.creation_date || new Date(), // Ajusté pour utiliser creation_date, mais conversion depuis creationDate si existant
   });
 
   useEffect(() => {
@@ -48,48 +48,82 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
         ...prev,
         type: expense.type,
       }));
+    } else if (!formData.type) {
+      setFormData((prev) => ({
+        ...prev,
+        start_date: "",
+        end_date: "",
+      }));
     }
-  }, [expense]);
+  }, [expense, formData.type]);
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
   ) => {
     const { name, value, files } = e.target as HTMLInputElement;
-
-    setFormData((prev) => ({
-      ...prev,
-      [name]:
-        name === "type"
-          ? value === "true"
-          : name === "receipt" && files
-          ? files[0]
-          : value,
-    }));
+    setFormData((prev) => {
+      const updated = {
+        ...prev,
+        [name]:
+          name === "type"
+            ? value === "true"
+            : name === "receipt" && files && files[0]
+            ? files[0]
+            : value,
+      };
+      if (name === "type") {
+        if (value === "false") {
+          updated.start_date = "";
+          updated.end_date = "";
+        } else if (value === "true" && !expense) {
+          updated.date = "";
+        }
+      }
+      return updated;
+    });
   };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
     const formDataToSend = new FormData();
-    formDataToSend.append("description", formData.description);
-    formDataToSend.append("amount", formData.amount);
-    formDataToSend.append("type", formData.type ? "true" : "false");
-    formDataToSend.append("categoryId", formData.categoryId);
 
-    if (!formData.type && formData.date) {
+    if (!formData.description.trim()) {
+      alert("Description is required.");
+      return;
+    }
+    if (!formData.amount || Number(formData.amount) <= 0) {
+      alert("Amount must be greater than zero.");
+      return;
+    }
+    if (!formData.categoryId) {
+      alert("Category is required.");
+      return;
+    }
+
+    if (formData.type) {
+      if (!formData.start_date) {
+        alert("Start date is required for recurring expenses.");
+        return;
+      }
+      formDataToSend.append("start_date", formData.start_date);
+      if (formData.end_date) formDataToSend.append("end_date", formData.end_date);
+    } else {
+      if (!formData.date) {
+        alert("Date is required for onetime expenses.");
+        return;
+      }
       formDataToSend.append("date", formData.date);
     }
-    if (formData.type && formData.startDate) {
-      formDataToSend.append("startDate", formData.startDate);
-    }
-    if (formData.type && formData.endDate) {
-      formDataToSend.append("endDate", formData.endDate);
-    }
+
+    formDataToSend.append("description", formData.description);
+    formDataToSend.append("amount", formData.amount);
+    formDataToSend.append("type", formData.type.toString());
+    formDataToSend.append("categoryId", formData.categoryId);
     if (formData.receipt instanceof File) {
       formDataToSend.append("receipt", formData.receipt);
     }
-    if (expense?.creationDate) {
-      formDataToSend.append("creationDate", formData.creationDate.toISOString());
+    if (expense?.creation_date) {
+      formDataToSend.append("creation_date", formData.creation_date.toISOString()); // Ajusté pour creation_date
     }
 
     onSubmit(formDataToSend);
@@ -98,9 +132,7 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
   return (
     <div className="bg-white p-6 rounded-xl shadow-lg w-[450px]">
       <h2 className="text-xl font-bold mb-4">{expense ? "Edit Expense" : "Add Expense"}</h2>
-
       <form onSubmit={handleSubmit} className="space-y-4">
-        {/* Description */}
         <div>
           <label className="block mb-1 text-gray-700">Description</label>
           <input
@@ -112,8 +144,6 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
             required
           />
         </div>
-
-        {/* Amount */}
         <div>
           <label className="block mb-1 text-gray-700">Amount</label>
           <input
@@ -122,11 +152,11 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
             value={formData.amount}
             onChange={handleChange}
             className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-400"
+            min="0"
+            step="0.01"
             required
           />
         </div>
-
-        {/* Category */}
         <div>
           <label className="block mb-1 text-gray-700">Category</label>
           <select
@@ -144,21 +174,17 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
             ))}
           </select>
         </div>
-
-        {/* Creation Date (read-only) */}
-        {expense?.creationDate && (
+        {expense?.creation_date && (
           <div>
             <label className="block mb-1 text-gray-700">Creation Date</label>
             <input
               type="text"
-              value={formData.creationDate.toLocaleDateString()}
+              value={formData.creation_date.toLocaleDateString()} // Ajusté pour creation_date
               readOnly
               className="w-full border rounded-lg px-3 py-2 bg-gray-100 cursor-not-allowed"
             />
           </div>
         )}
-
-        {/* Type */}
         <div>
           <label className="block mb-1 text-gray-700">Type</label>
           <select
@@ -171,30 +197,27 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
             <option value="true">Récurrente</option>
           </select>
         </div>
-
-        {/* Dates conditionnelles */}
         {formData.type ? (
           <>
             <div>
               <label className="block mb-1 text-gray-700">Start Date</label>
               <input
                 type="date"
-                name="startDate"
-                value={formData.startDate}
+                name="start_date"
+                value={formData.start_date}
                 onChange={handleChange}
                 className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-400"
                 required
               />
             </div>
             <div>
-              <label className="block mb-1 text-gray-700">End Date</label>
+              <label className="block mb-1 text-gray-700">End Date (Optional)</label>
               <input
                 type="date"
-                name="endDate"
-                value={formData.endDate}
+                name="end_date"
+                value={formData.end_date}
                 onChange={handleChange}
                 className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-400"
-                required
               />
             </div>
           </>
@@ -211,8 +234,6 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
             />
           </div>
         )}
-
-        {/* Receipt */}
         <div>
           <label className="block mb-1 text-gray-700">Receipt (optional)</label>
           <input
@@ -222,7 +243,7 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
             onChange={handleChange}
             className="w-full"
           />
-          {formData.receipt && typeof formData.receipt === "string" && (
+          {typeof formData.receipt === "string" && formData.receipt && (
             <a
               href={formData.receipt}
               target="_blank"
@@ -233,8 +254,6 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
             </a>
           )}
         </div>
-
-        {/* Buttons */}
         <div className="flex justify-end space-x-2 pt-4">
           <button
             type="button"

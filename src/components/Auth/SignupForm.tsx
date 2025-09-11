@@ -130,6 +130,7 @@ const SignUp: React.FC<SignUpProps> = ({ toggleForm }) => {
               {/* Buttons */}
               <div className="flex flex-col xl:flex-row gap-2 basis-1/2 m-9 justify-center items-center">
                 <Button
+                 text=""
                   type="submit"
                   bg_color="primary"
                   size="md"
