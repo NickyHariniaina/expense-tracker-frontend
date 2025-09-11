@@ -45,9 +45,7 @@ const DashboardSummary = () => {
     try {
       setLoading(true);
       const data = await getMonthlySummary(selectedDate);
-      if (data) {
-        setSummary(data);
-      }
+      if (data) setSummary(data);
     } catch (error) {
       console.error('Error fetching summary:', error);
       toast.error('Failed to load financial data');
@@ -68,11 +66,8 @@ const DashboardSummary = () => {
 
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const selectedMonth = event.target.value;
-    console.log("Selected month :", selectedMonth);
-    // convert month to date 
     if (selectedMonth) {
-      const newDate = new Date(selectedMonth + '-01T00:00:00');
-      setSelectedDate(newDate);
+      setSelectedDate(new Date(selectedMonth + '-01T00:00:00'));
     }
   };
 
@@ -80,118 +75,115 @@ const DashboardSummary = () => {
     setSelectedCategory(event.target.value);
   };
 
-  const handleRefresh = () => {
-    fetchSummary();
-  };
+  const handleRefresh = () => fetchSummary();
 
-  if (loading) {
-    return (
-      <Loading />
-    );
-  }
+  if (loading) return <Loading />;
 
   return (
-    <div className="p-6 space-y-6">
-      
-      {/* Header with Budget Alert */}
+    <div className="p-6 space-y-6 text-gray-900">
+      {/* Header */}
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-3xl font-spartan font-bold text-gray">Dashboard & Monthly Summary</h2>
-          <p className="text-gray">
+          <h2 className="text-3xl font-bold">Dashboard & Monthly Summary</h2>
+          <p className="text-gray-600">
             {selectedDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
           </p>
         </div>
-        
+
         {summary && summary.totalExpense > summary.totalIncome && (
-          <div className="bg-red-100 border border-[#EF4444] text-red px-4 py-2 rounded">
-            <strong>Budget Warning:</strong> Exceeded by €{(summary.totalExpense - summary.totalIncome).toFixed(2)}
+          <div className="bg-red-500/25 backdrop-blur-md border border-red-400 text-red-700 px-4 py-2 rounded-lg font-semibold shadow-lg">
+            Exceeded by €{(summary.totalExpense - summary.totalIncome).toFixed(2)}
           </div>
         )}
       </div>
 
       {/* Filters */}
-      <div className="bg-white p-4 rounded-lg shadow">
-        <h3 className="text-lg font-semibold mb-4">Filters</h3>
+      <div className="p-6 rounded-2xl shadow-xl border border-white/20 
+        bg-gradient-to-r from-white/10 via-white/20 to-white/10 
+        backdrop-blur-xl">
+        <h3 className="text-lg font-semibold mb-4 text-gray-900">Filters</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Select Month
-            </label>
+            <label className="block text-sm font-medium mb-2 text-gray-800">Select Month</label>
             <input
               type="month"
-              placeholder='Example : 2018-03'
               onChange={handleDateChange}
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-3 rounded-lg 
+              bg-white/20 backdrop-blur-sm 
+              border border-white/30 
+              focus:outline-none focus:ring-2 focus:ring-blue-400 
+              text-gray-900 placeholder-gray-400"
+              placeholder="Select month"
             />
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Filter by Category
-            </label>
+            <label className="block text-sm font-medium mb-2 text-gray-800">Filter by Category</label>
             <select
               value={selectedCategory}
               onChange={handleCategoryChange}
-              className="w-full p-2 border border-gray-300 rounded-md"
+              className="w-full p-3 rounded-lg 
+              bg-white/20 backdrop-blur-sm 
+              border border-white/30 
+              focus:outline-none focus:ring-2 focus:ring-green-400 
+              text-gray-900"
             >
               <option value="all">All Categories</option>
-              {summary?.expensesByCategory && Object.keys(summary.expensesByCategory).map((category) => (
-                <option key={category} value={category}>
-                  {category}
-                </option>
-              ))}
+              {summary?.expensesByCategory &&
+                Object.keys(summary.expensesByCategory).map((category) => (
+                  <option key={category} value={category}>
+                    {category}
+                  </option>
+                ))}
             </select>
           </div>
         </div>
-
-        <Button
-          text='REFRESH DATA'
-          className='my-4'
-          onClick={handleRefresh}
-        />
+        <Button text="REFRESH DATA" className="mt-4" onClick={handleRefresh} />
       </div>
 
+
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-white p-4 rounded-lg shadow border-l-4 border-[#059669]">
-          <h3 className="text-lg font-semibold text-gray">Total Income</h3>
-          <p className="text-2xl font-bold text-green">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div className="p-6 rounded-2xl shadow-xl border-l-4 border-green-500 bg-gradient-to-r from-green-400/25 to-green-500/10 backdrop-blur-md">
+          <h3 className="text-lg font-semibold mb-2">Total Income</h3>
+          <p className="text-2xl font-bold text-green-700">
             Ariary {summary?.totalIncome?.toFixed(2) || '0.00'}
           </p>
-          <p className="text-sm text-gray">All income sources</p>
+          <p className="text-sm text-gray-600">All income sources</p>
         </div>
-        
-        <div className="bg-white p-4 rounded-lg shadow border-l-4 border-[#EF4444]">
-          <h3 className="text-lg font-semibold text-gray">Total Expenses</h3>
-          <p className="text-2xl font-bold text-red">
+
+        <div className="p-6 rounded-2xl shadow-xl border-l-4 border-red-500 bg-gradient-to-r from-red-400/25 to-red-500/10 backdrop-blur-md">
+          <h3 className="text-lg font-semibold mb-2">Total Expenses</h3>
+          <p className="text-2xl font-bold text-red-700">
             Ariary {summary?.totalExpense?.toFixed(2) || '0.00'}
           </p>
-          <p className="text-sm text-gray">Including recurring expenses</p>
+          <p className="text-sm text-gray-600">Including recurring expenses</p>
         </div>
-        
-        <div className="bg-white p-4 rounded-lg shadow border-l-4 border-[#0EA5E9]">
-          <h3 className="text-lg font-semibold text-gray">Remaining Balance</h3>
-          <p className={`text-2xl font-bold ${
-            summary?.balance >= 0 ? 'text-green' : 'text-red'
-          }`}>
+
+        <div className="p-6 rounded-2xl shadow-xl border-l-4 border-blue-500 bg-gradient-to-r from-blue-400/25 to-blue-500/10 backdrop-blur-md">
+          <h3 className="text-lg font-semibold mb-2">Remaining Balance</h3>
+          <p className={`text-2xl font-bold ${summary?.balance >= 0 ? 'text-green-700' : 'text-red-700'}`}>
             Ariary {summary?.balance?.toFixed(2) || '0.00'}
           </p>
-          <p className="text-sm text-gray">Income − Expenses</p>
+          <p className="text-sm text-gray-600">Income − Expenses</p>
         </div>
       </div>
 
       {/* Charts */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        
-        {/* Pie Chart - Expense Categories */}
-        <div className="bg-white p-4 rounded-lg shadow">
+        <div className="p-6 rounded-2xl shadow-xl bg-white/20 backdrop-blur-lg border border-white/20">
           <h3 className="text-lg font-semibold mb-4">Expense Categories</h3>
           <div className="h-80">
-            <Doughnut data={getPieData(summary)} options={pieOptions} />
+            {!summary?.expensesByCategory || Object.keys(summary.expensesByCategory).length === 0 ? (
+              <div className="flex items-center justify-center h-80 text-gray-600">
+                No data available
+              </div>
+            ) : (
+              <Doughnut data={getPieData(summary)} options={pieOptions} />
+            )}
           </div>
         </div>
 
-        {/* Bar Chart - Monthly Spending */}
-        <div className="bg-white p-4 rounded-lg shadow">
+        <div className="p-6 rounded-2xl shadow-xl bg-white/20 backdrop-blur-lg border border-white/20">
           <h3 className="text-lg font-semibold mb-4">Monthly Spending Trend</h3>
           <div className="h-80">
             <Bar data={getBarData(summary)} options={barOptions} />
@@ -201,20 +193,27 @@ const DashboardSummary = () => {
 
       {/* Additional Info */}
       {summary && (
-        <div className="bg-white p-4 rounded-lg shadow">
+        <div className="p-6 rounded-2xl shadow-xl bg-white/20 backdrop-blur-lg border border-white/20">
           <h3 className="text-lg font-semibold mb-4">Monthly Details</h3>
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm">
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-gray-700 text-sm">
             <div>
-              <p><strong>Period:</strong> {selectedDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</p>
-              <p><strong>Budget Status:</strong> 
-                <span className={summary.balance >= 0 ? 'text-green ml-2' : 'text-red ml-2'}>
+              <p>
+                <strong>Period:</strong> {selectedDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
+              </p>
+              <p>
+                <strong>Budget Status:</strong>
+                <span className={summary.balance >= 0 ? 'text-green-700 ml-2' : 'text-red-700 ml-2'}>
                   {summary.balance >= 0 ? 'Within Budget' : 'Over Budget'}
                 </span>
               </p>
             </div>
             <div>
-              <p><strong>Expense Categories:</strong> {Object.keys(summary.expensesByCategory || {}).length}</p>
-              <p><strong>Data Updated:</strong> {new Date().toLocaleTimeString()}</p>
+              <p>
+                <strong>Expense Categories:</strong> {Object.keys(summary.expensesByCategory || {}).length}
+              </p>
+              <p>
+                <strong>Data Updated:</strong> {new Date().toLocaleTimeString()}
+              </p>
             </div>
           </div>
         </div>
@@ -223,4 +222,5 @@ const DashboardSummary = () => {
   );
 };
 
-export default DashboardSummary;
+export default DashboardSummary
+
