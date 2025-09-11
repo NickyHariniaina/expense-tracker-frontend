@@ -22,22 +22,22 @@ const DashBoard: FC = () => {
 
   return (
     <div className="flex flex-col h-screen">
-  {/* Header */}
-  <Header />
+      {/* Header */}
+      <Header />
+      {/* Main Content */}
+      <div className="flex flex-1 overflow-hidden pt-16">
+        {/* Sidebar */}
+        <div className="flex-shrink-0 w-64 h-full relative z-50">
+          <Sidebar />
+        </div>
+        {/* Content area */}
+        <div className="flex-1 overflow-auto p-4 neutraly-color shadow-lg rounded-tl-4xl">
+          <Outlet />
+        </div>
 
-  {/* Main Content */}
-  <div className="flex flex-1 overflow-hidden pt-0"> {/* ← pt-16 = hauteur du header */}
-    {/* Sidebar wrapper */}
-    <div className="flex-shrink-0 w-64 h-full">
-      <Sidebar />
+      </div>
     </div>
 
-    {/* Content area */}
-    <div className="flex-1 overflow-auto my-20 mx-2 bg-gray-100">
-      <Outlet />
-    </div>
-  </div>
-</div>
 
 
 
