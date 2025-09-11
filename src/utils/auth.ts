@@ -78,3 +78,23 @@ export const refresh = async () => {
     console.error(error);
   }
 };
+
+export const logout = async () => {
+  try {
+    const res = await fetch("http://localohost:3000/api/auth/logout", {
+      method: "POST",
+      credentials: "include",
+      headers: {
+        "Content-type": "application/json",
+      },
+    });
+
+    if (res.status === 200) {
+      toast.success("User logged out successfully.");
+    } else if (res.status === 500) {
+      toast.error("Internal Server Error");
+    }
+  } catch (error) {
+    toast.error("Network Error.");
+  }
+};
