@@ -11,19 +11,19 @@ export const login = async (email: string, password: string) => {
 
     if (res.status === 200) {
       toast.success("User logged in successfully.");
-      return { success : true, status : res.status };
+      return { success: true, status: res.status };
     } else if (res.status === 404) {
       toast.error("User not found.");
-      return { success : false, status : res.status };
+      return { success: false, status: res.status };
     } else if (res.status === 401) {
       toast.error("Password doesn't match.");
-      return { success : false, status : res.status };
+      return { success: false, status: res.status };
     } else if (res.status === 500) {
       toast.error("Internal Server Error.");
-      return { success : false, status : res.status };
+      return { success: false, status: res.status };
     } else {
       toast.error("Unexpected error.");
-      return { success : false, status : res.status};
+      return { success: false, status: res.status };
     }
   } catch (error) {
     console.error(error);
@@ -43,6 +43,7 @@ export const signup = async (email: string, password: string) => {
 
     if (res.status === 201) {
       toast.success("User created successfully.");
+      window.location.href = "/dashboard";
     } else if (res.status === 409) {
       toast.error("You cannot create account twice.");
     } else if (res.status === 500) {

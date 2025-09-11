@@ -3,6 +3,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faKey, faUser } from "@fortawesome/free-solid-svg-icons";
 import Button from "../Button/Button";
 import { signup } from "../../utils/auth";
+import Loading from "../Loading/Loading";
 
 interface SignUpProps {
   toggleForm: () => void;
@@ -20,23 +21,35 @@ const SignUp: React.FC<SignUpProps> = ({ toggleForm }) => {
     e.preventDefault();
     setIsLoading(true);
     setSuccessMessage(null);
+    setErrorMessage(null);
+
     if (password !== confirmPassword) {
+      setErrorMessage("Passwords do not match");
       setIsLoading(false);
       return;
     }
+
     try {
       await signup(email, password);
-      setSuccessMessage("well! the user is created.");
+
+      setSuccessMessage("User created successfully!");
     } catch (error) {
-      setErrorMessage("User creatin failled");
+      setErrorMessage("User creation failed");
     } finally {
       setIsLoading(false);
     }
   };
 
   return (
-    <div className="flex items-center justify-center min-h-screen w-full">
-      <div className="w-full max-w-4xl">
+    <div className="flex items-center justify-center min-h-screen w-full relative">
+      <div className="w-full max-w-4xl relative">
+        {/* Fullscreen overlay spinner */}
+        {isLoading && (
+          <div className="absolute inset-0 bg-white bg-opacity-70 flex items-center justify-center z-50">
+            <Loading size="lg" />
+          </div>
+        )}
+
         <section className="w-full md:basis-1/2 flex items-center justify-center relative">
           <div className="w-full sm:w-4/5 md:w-3/4 lg:w-1/2 p-6 md:p-8 bg-white rounded-lg shadow-lg shadow-gray-500 relative mb-8 md:mb-0">
             <div className="flex justify-center mb-4">
@@ -44,10 +57,13 @@ const SignUp: React.FC<SignUpProps> = ({ toggleForm }) => {
                 <FontAwesomeIcon icon={faUser} size="3x" />
               </div>
             </div>
+
             <h2 className="text-3xl font-bold text-center font-spartan mb-6">
               Sign Up
             </h2>
+
             <form onSubmit={handleSubmit} className="space-y-5">
+              {/* Email */}
               <div className="relative">
                 <h2 className="text-2xl font-light text-center font-spartan mb-2">
                   Email
@@ -70,6 +86,7 @@ const SignUp: React.FC<SignUpProps> = ({ toggleForm }) => {
                 </div>
               </div>
 
+              {/* Password & Confirm */}
               <div className="relative">
                 <h2 className="text-2xl font-light text-center font-spartan mb-2">
                   Password
@@ -97,7 +114,7 @@ const SignUp: React.FC<SignUpProps> = ({ toggleForm }) => {
                       className="absolute left-3 top-1/2 transform -translate-y-1/2 text-red pointer-events-none z-10"
                     />
                     <input
-                      placeholder="Confirm your pass..."
+                      placeholder="Confirm your password..."
                       id="confirmPassword"
                       type="password"
                       value={confirmPassword}
@@ -109,29 +126,38 @@ const SignUp: React.FC<SignUpProps> = ({ toggleForm }) => {
                   </div>
                 </div>
               </div>
+
+              {/* Buttons */}
               <div className="flex flex-col xl:flex-row gap-2 basis-1/2 m-9 justify-center items-center">
-                <div className="text-center">
-                  <Button
-                    text={isLoading ? "Signing up" : "SIGN UP"}
-                    type="submit"
-                    bg_color="primary"
-                    size="md"
-                    disabled={isLoading}
-                    className="secondary-color rounded-2xl p-10"
-                  />
-                </div>
-                <div className="text-center">
-                  <Button
-                    text="GO BACK TO LOG IN"
-                    onClick={toggleForm}
-                    size="md"
-                    className=" terty-color rounded-2xl p-3"
-                  />
-                </div>
+                <Button
+                  type="submit"
+                  bg_color="primary"
+                  size="md"
+                  disabled={isLoading}
+                  className="secondary-color rounded-2xl p-10 flex items-center justify-center gap-2"
+                >
+                  {isLoading ? <Loading size="sm" /> : "SIGN UP"}
+                </Button>
+                <Button
+                  text="GO BACK TO LOG IN"
+                  onClick={toggleForm}
+                  size="md"
+                  className="terty-color rounded-2xl p-3"
+                  disabled={isLoading}
+                />
               </div>
 
-              {successMessage}
-              {errorMessage}
+              {/* Messages */}
+              {successMessage && (
+                <p className="text-green-600 text-center font-medium">
+                  {successMessage}
+                </p>
+              )}
+              {errorMessage && (
+                <p className="text-red-600 text-center font-medium">
+                  {errorMessage}
+                </p>
+              )}
             </form>
           </div>
         </section>
