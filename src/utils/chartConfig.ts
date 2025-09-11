@@ -1,34 +1,14 @@
-import type { ChartData } from 'chart.js';
-import type { MonthlySummary } from '../types/summary';
-
-//types of configuration graphic
-export interface chartData {
-  labels: string[];
-  datasets: {
-    data: number[];
-    backgroundColor: string[];
-    hoverBackgroundColor: string[];
-    borderColor?: string[];
-    borderWidth?: number;
-  }
-}
-
-// reusable colors
-export const CHART_COLORS = {
-  primary: ['#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', '#9966FF', '#FF9F40', '#FF6384', '#C9CBCF'],
-  income: '#4BC0C0',
-  expense: '#FF6384',
-  balance: '#36A2EB',
-};
-
-export const getDoughnutData = (summary: MonthlySummary | null): ChartData => {
+// Chart configurations
+export const getPieData = (summary: any) => {
   return {
-    labels: summary ? Object.keys(summary.expensesByCategory) : [],
+    labels: summary?.expensesByCategory ? Object.keys(summary.expensesByCategory) : [],
     datasets: [
       {
-        data: summary ? Object.values(summary.expensesByCategory) : [],
-        backgroundColor: CHART_COLORS.primary,
-        hoverBackgroundColor: CHART_COLORS.primary,
+        data: summary?.expensesByCategory ? Object.values(summary.expensesByCategory) : [],
+        backgroundColor: [
+          '#FF6384', '#36A2EB', '#FFCE56', '#4BC0C0', 
+          '#9966FF', '#FF9F40', '#C9CBCF', '#FF6384'
+        ],
         borderWidth: 2,
         borderColor: '#ffffff',
       },
@@ -36,64 +16,55 @@ export const getDoughnutData = (summary: MonthlySummary | null): ChartData => {
   };
 };
 
-export const getBarData = (summary: MonthlySummary | null): ChartData => {
+export const getBarData = (summary: any) => {
   return {
-    labels: ['Revenus', 'Dépenses', 'Balance'],
+    labels: summary?.monthlyTrend ? summary.monthlyTrend.map((item: any) => item.month) : [],
     datasets: [
       {
-        data: summary ? [summary.totalIncome, summary.totalExpense, summary.balance] : [0, 0, 0],
-        backgroundColor: [CHART_COLORS.income, CHART_COLORS.expense, CHART_COLORS.balance],
-        hoverBackgroundColor: [CHART_COLORS.income, CHART_COLORS.expense, CHART_COLORS.balance],
-        borderWidth: 1,
+        label: 'Income',
+        data: summary?.monthlyTrend ? summary.monthlyTrend.map((item: any) => item.income) : [],
+        backgroundColor: '#4BC0C0',
+      },
+      {
+        label: 'Expenses',
+        data: summary?.monthlyTrend ? summary.monthlyTrend.map((item: any) => item.expense) : [],
+        backgroundColor: '#FF6384',
       },
     ],
   };
 };
 
-// Configuration for graphical tendance
-export const getLineData = (summary: MonthlySummary | null) => {
-  if (!summary?.monthlyTrend) {
-    return {
-      labels: [],
-      datasets: [],
-    };
-  }
-
-  return {
-    labels: summary.monthlyTrend.map(item => item.month),
-    datasets: [
-      {
-        label: 'Revenus',
-        data: summary.monthlyTrend.map(item => item.income),
-        borderColor: CHART_COLORS.income,
-        backgroundColor: 'rgba(75, 192, 192, 0.2)',
-        tension: 0.1,
-      },
-      {
-        label: 'Dépenses',
-        data: summary.monthlyTrend.map(item => item.expense),
-        borderColor: CHART_COLORS.expense,
-        backgroundColor: 'rgba(255, 99, 132, 0.2)',
-        tension: 0.1,
-      },
-    ],
-  };
-};
-
-// Common options for all charts
-export const chartOptions = {
+export const pieOptions = {
   responsive: true,
   maintainAspectRatio: false,
   plugins: {
     legend: {
       position: 'top' as const,
     },
-    tooltip: {
-      callbacks: {
-        label: function(context: any) {
-          return `${context.label}: ${context.raw.toFixed(2)} €`;
-        }
-      }
-    }
+  },
+};
+
+export const barOptions = {
+  responsive: true,
+  maintainAspectRatio: false,
+  plugins: {
+    legend: {
+      position: 'top' as const,
+    },
+  },
+  scales: {
+    y: {
+      beginAtZero: true,
+      title: {
+        display: true,
+        text: 'Amount (€)',
+      },
+    },
+    x: {
+      title: {
+        display: true,
+        text: 'Months',
+      },
+    },
   },
 };
