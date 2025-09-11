@@ -21,21 +21,21 @@ const DashboardHome: FC = () => {
   }
 
   return (
-    <div className="p-6 bg-gray-100 min-h-screen">
-      <h1 className="text-2xl font-bold text-neutraly-color mb-4">Dashboard Home</h1>
+    <div className="p-6 bg-gray min-h-screen">
+      <h1 className="text-2xl font-bold text-white mb-4">Dashboard Home</h1>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
         <div className="bg-white p-4 rounded-lg shadow">
           <h2 className="text-lg font-semibold text-gray-700">Total Expenses</h2>
-          <p className="text-xl text-red-500">{totalExpenses.toFixed(2)} €</p>
+          <p className="text-xl text-red-500">{totalExpenses.toFixed(2)} Ar</p>
         </div>
         <div className="bg-white p-4 rounded-lg shadow">
           <h2 className="text-lg font-semibold text-gray-700">Total Incomes</h2>
-          <p className="text-xl text-green-500">{totalIncomes.toFixed(2)} €</p>
+          <p className="text-xl text-green-500">{totalIncomes.toFixed(2)} Ar</p>
         </div>
         <div className="bg-white p-4 rounded-lg shadow">
           <h2 className="text-lg font-semibold text-gray-700">Balance</h2>
           <p className={`text-xl ${balance >= 0 ? "text-green-500" : "text-red-500"}`}>
-            {balance.toFixed(2)} €
+            {balance.toFixed(2)} Ar
           </p>
         </div>
       </div>

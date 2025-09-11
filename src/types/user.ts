@@ -7,11 +7,11 @@ export interface UserExpense {
   id: number;
   description: string;
   amount: number;
-  type: boolean; // false = Onetime, true = Recurring
-  date: Date | null;       // utilisé seulement si type === false
-  start_date: Date | null; // utilisé seulement si type === true
-  end_date: Date | null;   // utilisé seulement si type === true
-  receipt: string | null;  // URL du reçu
+  type: boolean;
+  date: Date | null; 
+  start_date: Date | null;
+  end_date: Date | null; 
+  receipt: string | null;  
   user_id: number;
   category_id: number;
   creation_date: Date;     // Changé de creationDate à creation_date
