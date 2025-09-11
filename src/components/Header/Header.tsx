@@ -1,12 +1,19 @@
-import React, { useState, useEffect } from 'react';
-import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { FaBell, FaUserCog, FaUser, FaCog, FaSignOutAlt } from 'react-icons/fa';
+import React, { useState, useEffect } from "react";
+import { NavLink, useLocation, useNavigate } from "react-router-dom";
+import { FaBell, FaUserCog, FaUser, FaCog, FaSignOutAlt } from "react-icons/fa";
+import { logout } from "../../utils/auth";
 
 const Header: React.FC = () => {
     const location = useLocation();
     const [isDropdownOpen, setIsDropdownOpen] = useState(false);
     const [isWideScreen, setIsWideScreen] = useState(window.innerWidth > 600);
     const navigate = useNavigate();
+
+  const navigate = useNavigate();
+  const handleLogout = async () => {
+    await logout();
+    navigate("/");
+  };
 
   useEffect(() => {
     const handleResize = () => setIsWideScreen(window.innerWidth > 600);
@@ -23,11 +30,6 @@ const Header: React.FC = () => {
 
     const toggleDropdown = () => {
         setIsDropdownOpen(!isDropdownOpen);
-    };
-
-    const handleLogout = () => {
-        navigate('/auth'); // Remplace par ta logique de déconnexion
-        setIsDropdownOpen(false); // Ferme le dropdown
     };
 
     return (
