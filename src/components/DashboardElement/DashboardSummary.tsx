@@ -14,6 +14,7 @@ import toast from 'react-hot-toast';
 import { getMonthlySummary } from '../../utils/summary';
 import { barOptions, getBarData, getPieData, pieOptions } from '../../utils/chartConfig';
 import Button from '../Button/Button';
+import Loading from '../Loading/Loading';
 
 // Register Chart.js components
 ChartJS.register(
@@ -66,7 +67,13 @@ const DashboardSummary = () => {
   };
 
   const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setSelectedDate(new Date(event.target.value));
+    const selectedMonth = event.target.value;
+    console.log("Selected month :", selectedMonth);
+    // convert month to date 
+    if (selectedMonth) {
+      const newDate = new Date(selectedMonth + '-01T00:00:00');
+      setSelectedDate(newDate);
+    }
   };
 
   const handleCategoryChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -79,9 +86,7 @@ const DashboardSummary = () => {
 
   if (loading) {
     return (
-      <div className="flex justify-center items-center min-h-96">
-        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
-      </div>
+      <Loading />
     );
   }
 
@@ -91,14 +96,14 @@ const DashboardSummary = () => {
       {/* Header with Budget Alert */}
       <div className="flex justify-between items-center">
         <div>
-          <h2 className="text-3xl font-spartan font-bold text-gray-800">Dashboard & Monthly Summary</h2>
-          <p className="text-gray-600">
+          <h2 className="text-3xl font-spartan font-bold text-gray">Dashboard & Monthly Summary</h2>
+          <p className="text-gray">
             {selectedDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}
           </p>
         </div>
         
         {summary && summary.totalExpense > summary.totalIncome && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-2 rounded">
+          <div className="bg-red-100 border border-[#EF4444] text-red px-4 py-2 rounded">
             <strong>Budget Warning:</strong> Exceeded by €{(summary.totalExpense - summary.totalIncome).toFixed(2)}
           </div>
         )}
@@ -114,6 +119,7 @@ const DashboardSummary = () => {
             </label>
             <input
               type="month"
+              placeholder='Example : 2018-03'
               onChange={handleDateChange}
               className="w-full p-2 border border-gray-300 rounded-md"
             />
@@ -140,35 +146,36 @@ const DashboardSummary = () => {
         <Button
           text='REFRESH DATA'
           className='my-4'
+          onClick={handleRefresh}
         />
       </div>
 
       {/* Summary Cards */}
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <div className="bg-white p-4 rounded-lg shadow border-l-4 border-green-500">
-          <h3 className="text-lg font-semibold text-gray-700">Total Income</h3>
-          <p className="text-2xl font-bold text-green-600">
+        <div className="bg-white p-4 rounded-lg shadow border-l-4 border-[#059669]">
+          <h3 className="text-lg font-semibold text-gray">Total Income</h3>
+          <p className="text-2xl font-bold text-green">
             Ariary {summary?.totalIncome?.toFixed(2) || '0.00'}
           </p>
-          <p className="text-sm text-gray-500">All income sources</p>
+          <p className="text-sm text-gray">All income sources</p>
         </div>
         
-        <div className="bg-white p-4 rounded-lg shadow border-l-4 border-red-500">
-          <h3 className="text-lg font-semibold text-gray-700">Total Expenses</h3>
-          <p className="text-2xl font-bold text-red-600">
+        <div className="bg-white p-4 rounded-lg shadow border-l-4 border-[#EF4444]">
+          <h3 className="text-lg font-semibold text-gray">Total Expenses</h3>
+          <p className="text-2xl font-bold text-red">
             Ariary {summary?.totalExpense?.toFixed(2) || '0.00'}
           </p>
-          <p className="text-sm text-gray-500">Including recurring expenses</p>
+          <p className="text-sm text-gray">Including recurring expenses</p>
         </div>
         
-        <div className="bg-white p-4 rounded-lg shadow border-l-4 border-blue-500">
-          <h3 className="text-lg font-semibold text-gray-700">Remaining Balance</h3>
+        <div className="bg-white p-4 rounded-lg shadow border-l-4 border-[#0EA5E9]">
+          <h3 className="text-lg font-semibold text-gray">Remaining Balance</h3>
           <p className={`text-2xl font-bold ${
-            summary?.balance >= 0 ? 'text-green-600' : 'text-red-600'
+            summary?.balance >= 0 ? 'text-green' : 'text-red'
           }`}>
             Ariary {summary?.balance?.toFixed(2) || '0.00'}
           </p>
-          <p className="text-sm text-gray-500">Income − Expenses</p>
+          <p className="text-sm text-gray">Income − Expenses</p>
         </div>
       </div>
 
@@ -200,7 +207,7 @@ const DashboardSummary = () => {
             <div>
               <p><strong>Period:</strong> {selectedDate.toLocaleDateString('en-US', { month: 'long', year: 'numeric' })}</p>
               <p><strong>Budget Status:</strong> 
-                <span className={summary.balance >= 0 ? 'text-green-600 ml-2' : 'text-red-600 ml-2'}>
+                <span className={summary.balance >= 0 ? 'text-green ml-2' : 'text-red ml-2'}>
                   {summary.balance >= 0 ? 'Within Budget' : 'Over Budget'}
                 </span>
               </p>
@@ -212,7 +219,6 @@ const DashboardSummary = () => {
           </div>
         </div>
       )}
-
     </div>
   );
 };
