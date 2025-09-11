@@ -8,11 +8,11 @@ const Header: React.FC = () => {
     const [isWideScreen, setIsWideScreen] = useState(window.innerWidth > 600);
     const navigate = useNavigate();
 
-    useEffect(() => {
-        const handleResize = () => setIsWideScreen(window.innerWidth > 600);
-        window.addEventListener('resize', handleResize);
-        return () => window.removeEventListener('resize', handleResize);
-    }, []);
+  useEffect(() => {
+    const handleResize = () => setIsWideScreen(window.innerWidth > 600);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
     const getLinkClasses = (path: string) => {
         const isActive = location.pathname === path;

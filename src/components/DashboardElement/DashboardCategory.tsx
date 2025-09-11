@@ -134,12 +134,7 @@ const DashboardCategories: React.FC = () => {
                   </div>
                 </div>
 
-                {/* Card Footer - Optional: Add creation date or other info */}
-                <div className="bg-gray-50 px-6 py-3 border-t border-gray-100">
-                  <p className="text-xs text-gray-500 text-center">
-                    Category ID: {category.id}
-                  </p>
-                </div>
+               
               </div>
             ))}
           </div>

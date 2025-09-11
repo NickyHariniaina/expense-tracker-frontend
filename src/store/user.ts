@@ -104,20 +104,16 @@ export const useUserStore = create<UserState>((set, get) => ({
           "Content-type": "application/json",
         },
       });
-
-      const data = await response.json();
-
-      if (response.status !== 200) {
-        throw new Error("An error ocurred with the server");
-      }
-
-      set({
-        userIncomes: data,
+      const result = await response.json();
+      if (response.status !== 200) throw new Error("Server error");
+        set({
+        userIncomes: result.data || result, 
       });
     } catch (error) {
-      console.log(error);
+      console.error(error);
     }
   },
+  
   fetchUserSummary: async (
     startDate: Date | undefined = get().userData?.start_date,
   ) => {
