@@ -37,7 +37,8 @@ const DashboardSummary = () => {
   const [summary, setSummary] = useState<UserSummary>(null);
   const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState(new Date());
-  const [selectedCategory, setSelectedCategory] = useState("all");
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [tempMonth, setTempMonth] = useState('');
 
   useEffect(() => {
     fetchSummary();
@@ -46,6 +47,19 @@ const DashboardSummary = () => {
   useEffect(() => {
     checkBudgetAlerts();
   }, [summary]);
+
+  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setTempMonth(event.target.value);
+  };
+
+  const handleMonthBlur = () => {
+    if (tempMonth && tempMonth.length === 7) {
+      const newDate = new Date(tempMonth + '-01T00:00:00');
+      if (!isNaN(newDate.getTime())) {
+        setSelectedDate(newDate);
+      }
+    }
+  };
 
   const fetchSummary = async () => {
     try {
@@ -120,14 +134,13 @@ const DashboardSummary = () => {
             </label>
             <input
               type="month"
+              value={tempMonth}
               onChange={handleDateChange}
-              className="w-full p-3 rounded-lg 
-              bg-white/20 backdrop-blur-sm 
-              border border-white/30 
-              focus:outline-none focus:ring-2 focus:ring-blue-400 
-              text-gray-900 placeholder-gray-400"
-              placeholder="Select month"
+              onBlur={handleMonthBlur}
+              placeholder='Example : 2018-03'
+              className="w-full p-2 border border-gray-300 rounded-md"
             />
+
           </div>
         </div>
         <Button text="REFRESH DATA" className="mt-4" onClick={handleRefresh} />
