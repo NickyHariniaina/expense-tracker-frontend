@@ -3,24 +3,24 @@ import toast from "react-hot-toast";
 
 export const createExpense = async (
   amount: string,
-  date: Date,
+  date: string | null,
   categoryId: number,
   description: string | null,
   type: boolean,
-  startDate: Date | null,
-  endDate: Date | null,
+  startDate: string | null,
+  endDate: string | null,
   receipt: File | null,
 ) => {
   try {
     const formData = new FormData();
     formData.append("amount", amount);
-    formData.append("date", date.toISOString());
+    if (date) formData.append("date", date);
     formData.append("categoryId", categoryId.toString());
     formData.append("type", type ? "true" : "false");
 
     if (description) formData.append("description", description);
-    if (startDate) formData.append("startDate", startDate.toISOString());
-    if (endDate) formData.append("endDate", endDate.toISOString());
+    if (startDate) formData.append("startDate", startDate);
+    if (endDate) formData.append("endDate", endDate);
     if (receipt) formData.append("receipt", receipt);
 
     const res = await fetch("http://localhost:3000/api/expenses", {
@@ -71,24 +71,24 @@ export const getExpenseById = async (
 export const updateExpense = async (
   id: number,
   amount: string,
-  date: Date,
+  date: string | null,
   categoryId: number,
   description: string | null,
   type: boolean,
-  startDate: Date | null,
-  endDate: Date | null,
+  startDate: string | null,
+  endDate: string | null,
   receipt: File | null,
 ) => {
   try {
     const formData = new FormData();
     formData.append("amount", amount);
-    formData.append("date", date.toISOString());
+    if (date) formData.append("date", date);
     formData.append("categoryId", categoryId.toString());
     formData.append("type", type ? "true" : "false");
 
     if (description) formData.append("description", description);
-    if (startDate) formData.append("startDate", startDate.toISOString());
-    if (endDate) formData.append("endDate", endDate.toISOString());
+    if (startDate) formData.append("startDate", startDate);
+    if (endDate) formData.append("endDate", endDate);
     if (receipt) formData.append("receipt", receipt);
 
     const res = await fetch(`http://localhost:3000/api/expenses/${id}`, {

@@ -19,11 +19,13 @@ const DashBoard: FC = () => {
         </div>
         {/* Content area */}
         <div className="flex-1 overflow-auto my-20 mx-2 bg-gray-100">
+
           <Outlet />
         </div>
       </div>
     </div>
   );
+
 };
 
 export default DashBoard;

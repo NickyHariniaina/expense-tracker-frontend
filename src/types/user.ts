@@ -14,7 +14,7 @@ export interface UserExpense {
   receipt: string | null;  
   user_id: number;
   category_id: number;
-  creationDate: Date;     
+  creation_date: Date;     // Changé de creationDate à creation_date
 }
 
 export interface UserIncome {

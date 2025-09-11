@@ -3,10 +3,12 @@ import { NavLink, useLocation, useNavigate } from "react-router-dom";
 import { FaBell, FaUserCog, FaUser, FaCog, FaSignOutAlt } from "react-icons/fa";
 import { logout } from "../../utils/auth";
 
+
 const Header: React.FC = () => {
-  const location = useLocation();
-  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
-  const [isWideScreen, setIsWideScreen] = useState(window.innerWidth > 600);
+    const location = useLocation();
+    const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+    const [isWideScreen, setIsWideScreen] = useState(window.innerWidth > 600);
+    const navigate = useNavigate();
 
   const navigate = useNavigate();
   const handleLogout = async () => {
@@ -20,18 +22,16 @@ const Header: React.FC = () => {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  const getLinkClasses = (path: string) => {
-    const isActive = location.pathname === path;
-    return `flex items-center space-x-2 px-4 py-2 rounded-lg transition-colors ${
-      isActive
-        ? "bg-red-500 text-white font-semibold"
-        : "text-gray-300 hover:bg-red-600"
-    }`;
-  };
+    const getLinkClasses = (path: string) => {
+        const isActive = location.pathname === path;
+        return `flex items-center space-x-2 px-4 py-2 rounded-lg ${
+            isActive ? 'bg-red-500 text-white font-semibold' : 'text-gray'
+        }`;
+    };
 
-  const toggleDropdown = () => {
-    setIsDropdownOpen(!isDropdownOpen);
-  };
+    const toggleDropdown = () => {
+        setIsDropdownOpen(!isDropdownOpen);
+    };
 
   return (
     <header className="w-full neutraly-color text-white p-4 flex justify-end items-center fixed top-0">
