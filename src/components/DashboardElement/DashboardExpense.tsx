@@ -105,7 +105,7 @@ const DashboardExpense: React.FC = () => {
             <div className="p-2 border rounded">
               {userCategories?.find((cat: UserCategory) => cat.id === expense.category_id)?.name || "—"}
             </div>
-            <div className="p-2 border rounded">{formatDate(expense.creationDate)}</div>
+            <div className="p-2 border rounded">{formatDate(expense.creation_date)}</div>
             <div className="p-2 border rounded">
               {expense.receipt ? (
                 <a
