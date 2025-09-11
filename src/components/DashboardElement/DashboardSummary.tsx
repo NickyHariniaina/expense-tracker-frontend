@@ -96,6 +96,12 @@ const DashboardSummary = () => {
 
   const handleRefresh = () => fetchSummary();
 
+  const filteredExpenses = summary?.expensesByCategory
+  ? selectedCategory === "all"
+    ? summary.expensesByCategory
+    : { [selectedCategory]: summary.expensesByCategory[selectedCategory] || 0 }
+  : {};
+
   if (loading) return <Loading />;
 
   return (
