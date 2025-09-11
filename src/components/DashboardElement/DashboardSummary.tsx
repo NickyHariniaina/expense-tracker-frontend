@@ -81,12 +81,12 @@ const DashboardSummary = () => {
     }
   };
 
-  const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const selectedMonth = event.target.value;
-    if (selectedMonth) {
-      setSelectedDate(new Date(selectedMonth + "-01T00:00:00"));
-    }
-  };
+  // const handleDateChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   const selectedMonth = event.target.value;
+  //   if (selectedMonth) {
+  //     setSelectedDate(new Date(selectedMonth + "-01T00:00:00"));
+  //   }
+  // };
 
   const handleCategoryChange = (
     event: React.ChangeEvent<HTMLSelectElement>,
