@@ -1,40 +1,38 @@
-import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope, faKey, faUser } from '@fortawesome/free-solid-svg-icons';
-import Button from '../Button/Button';
-import { signup } from '../../utils/auth';
+import React, { useState } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faEnvelope, faKey, faUser } from "@fortawesome/free-solid-svg-icons";
+import Button from "../Button/Button";
+import { signup } from "../../utils/auth";
 
 interface SignUpProps {
   toggleForm: () => void;
 }
 
 const SignUp: React.FC<SignUpProps> = ({ toggleForm }) => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
-  const [confirmPassword, setConfirmPassword] = useState<string>('');
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [confirmPassword, setConfirmPassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
-
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setIsLoading(true);
     setSuccessMessage(null);
-    if (password!==confirmPassword) {
+    if (password !== confirmPassword) {
       setIsLoading(false);
-      return
+      return;
     }
     try {
-      await signup(email ,password)
-      setSuccessMessage('well! the user is created.')
+      await signup(email, password);
+      setSuccessMessage("well! the user is created.");
     } catch (error) {
-      setErrorMessage("User creatin failled")
+      setErrorMessage("User creatin failled");
+    } finally {
+      setIsLoading(false);
     }
-      finally{
-        setIsLoading(false)
-      }
-    };
+  };
 
   return (
     <div className="flex items-center justify-center min-h-screen w-full">
@@ -46,10 +44,14 @@ const SignUp: React.FC<SignUpProps> = ({ toggleForm }) => {
                 <FontAwesomeIcon icon={faUser} size="3x" />
               </div>
             </div>
-            <h2 className="text-3xl font-bold text-center font-spartan mb-6">Sign Up</h2>
+            <h2 className="text-3xl font-bold text-center font-spartan mb-6">
+              Sign Up
+            </h2>
             <form onSubmit={handleSubmit} className="space-y-5">
               <div className="relative">
-                <h2 className="text-2xl font-light text-center font-spartan mb-2">Email</h2>
+                <h2 className="text-2xl font-light text-center font-spartan mb-2">
+                  Email
+                </h2>
                 <div className="relative w-full">
                   <FontAwesomeIcon
                     icon={faEnvelope}
@@ -69,9 +71,11 @@ const SignUp: React.FC<SignUpProps> = ({ toggleForm }) => {
               </div>
 
               <div className="relative">
-                <h2 className="text-2xl font-light text-center font-spartan mb-2">Password</h2>
-                <div className='flex fles-col space-x-1'>
-                  <div className="relative w-1/2">
+                <h2 className="text-2xl font-light text-center font-spartan mb-2">
+                  Password
+                </h2>
+                <div className="flex flex-col gap-3 space-x-1">
+                  <div className="relative">
                     <FontAwesomeIcon
                       icon={faKey}
                       className="absolute left-3 top-1/2 transform -translate-y-1/2 text-red pointer-events-none z-10"
@@ -87,7 +91,7 @@ const SignUp: React.FC<SignUpProps> = ({ toggleForm }) => {
                       disabled={isLoading}
                     />
                   </div>
-                  <div className="relative w-1/2">
+                  <div className="relative">
                     <FontAwesomeIcon
                       icon={faKey}
                       className="absolute left-3 top-1/2 transform -translate-y-1/2 text-red pointer-events-none z-10"
@@ -105,31 +109,29 @@ const SignUp: React.FC<SignUpProps> = ({ toggleForm }) => {
                   </div>
                 </div>
               </div>
-            <div className='flex flex-row basis-1/2 m-9 justify-center items-center space-x-2'>
-              <div className="text-center">
-                <Button
-                  text={isLoading ? 'Signing up' : 'SIGN UP'}
-                  type="submit"
-                  bg_color="primary"
-                  size="md"
-                  disabled={isLoading}
-                  className="secondary-color rounded-full"
-                />
+              <div className="flex flex-col xl:flex-row gap-2 basis-1/2 m-9 justify-center items-center">
+                <div className="text-center">
+                  <Button
+                    text={isLoading ? "Signing up" : "SIGN UP"}
+                    type="submit"
+                    bg_color="primary"
+                    size="md"
+                    disabled={isLoading}
+                    className="secondary-color rounded-2xl p-10"
+                  />
+                </div>
+                <div className="text-center">
+                  <Button
+                    text="GO BACK TO LOG IN"
+                    onClick={toggleForm}
+                    size="md"
+                    className=" terty-color rounded-2xl p-3"
+                  />
+                </div>
               </div>
-              <div className="text-center">
-                <Button
-                  text="GO BACK TO LOG IN"
-                  onClick={toggleForm}
-                  size="md"
-                  className=" terty-color rounded-full"
-                /> 
-              </div>
-              
-            </div>
-            
-            {successMessage }
-                {errorMessage}
-                
+
+              {successMessage}
+              {errorMessage}
             </form>
           </div>
         </section>
@@ -139,3 +141,4 @@ const SignUp: React.FC<SignUpProps> = ({ toggleForm }) => {
 };
 
 export default SignUp;
+

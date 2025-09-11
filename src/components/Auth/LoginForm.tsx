@@ -101,7 +101,7 @@ const Login: React.FC<LoginFormProps> = ({toggleForm}) => {
                   bg_color="secondary"
                   size="md"
                   disabled={isLoading}
-                  className="w-1/2 rounded-full"
+                  className="w-1/2 rounded-2xl"
                 />
               </div>
 
