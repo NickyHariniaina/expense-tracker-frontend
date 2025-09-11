@@ -6,6 +6,7 @@ import type {
   UserIncome,
   UserSummary,
 } from "../types/user";
+import toast from "react-hot-toast";
 
 interface UserState {
   userData: UserData | null;
@@ -46,6 +47,8 @@ export const useUserStore = create<UserState>((set, get) => ({
         response.status === 401 &&
         data.message === "Please create an account or log in"
       ) {
+        window.location.href = "/auth";
+        toast.error(data.message);
         throw new Error(data.message);
       }
 
