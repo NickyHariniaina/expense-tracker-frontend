@@ -104,7 +104,7 @@ const DashboardSummary = () => {
 
         {summary && summary.totalExpense > summary.totalIncome && (
           <div className="bg-red-500/25 backdrop-blur-md border border-red-400 text-red-700 px-4 py-2 rounded-lg font-semibold shadow-lg">
-            Exceeded by €
+            Exceeded by Ar
             {(summary.totalExpense - summary.totalIncome).toFixed(2)}
           </div>
         )}
@@ -133,28 +133,6 @@ const DashboardSummary = () => {
               placeholder="Select month"
             />
           </div>
-          <div>
-            <label className="block text-sm font-medium mb-2 text-gray-800">
-              Filter by Category
-            </label>
-            <select
-              value={selectedCategory}
-              onChange={handleCategoryChange}
-              className="w-full p-3 rounded-lg 
-              bg-white/20 backdrop-blur-sm 
-              border border-white/30 
-              focus:outline-none focus:ring-2 focus:ring-green-400 
-              text-gray-900"
-            >
-              <option value="all">All Categories</option>
-              {summary?.expensesByCategory &&
-                Object.keys(summary.expensesByCategory).map((category) => (
-                  <option key={category} value={category}>
-                    {category}
-                  </option>
-                ))}
-            </select>
-          </div>
         </div>
         <Button text="REFRESH DATA" className="mt-4" onClick={handleRefresh} />
       </div>
@@ -164,7 +142,7 @@ const DashboardSummary = () => {
         <div className="p-6 rounded-2xl shadow-xl border-l-4 border-green-500 bg-gradient-to-r from-green-400/25 to-green-500/10 backdrop-blur-md">
           <h3 className="text-lg font-semibold mb-2">Total Income</h3>
           <p className="text-2xl font-bold text-green-700">
-            Ariary {summary?.totalIncome?.toFixed(2) || "0.00"}
+            Ariary {summary?.income?.toFixed(2) || "0.00"}
           </p>
           <p className="text-sm text-gray-600">All income sources</p>
         </div>
@@ -172,7 +150,7 @@ const DashboardSummary = () => {
         <div className="p-6 rounded-2xl shadow-xl border-l-4 border-red-500 bg-gradient-to-r from-red-400/25 to-red-500/10 backdrop-blur-md">
           <h3 className="text-lg font-semibold mb-2">Total Expenses</h3>
           <p className="text-2xl font-bold text-red-700">
-            Ariary {summary?.totalExpense?.toFixed(2) || "0.00"}
+            Ariary {summary?.expense?.toFixed(2) || "0.00"}
           </p>
           <p className="text-sm text-gray-600">Including recurring expenses</p>
         </div>
