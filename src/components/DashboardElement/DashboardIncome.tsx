@@ -14,7 +14,6 @@ const DashboardIncome: React.FC = () => {
   const [isConfirmOpen, setIsConfirmOpen] = useState(false);
   const [selectedIncome, setSelectedIncome] = useState<UserIncome | null>(null);
 
-  // ⚡ Récupération initiale des incomes
   useEffect(() => {
     fetchUserIncomes();
   }, [fetchUserIncomes]);
@@ -36,7 +35,6 @@ const DashboardIncome: React.FC = () => {
 
   const handleConfirmDelete = async () => {
     if (selectedIncome) {
-      // ⚡ On passe l'id de l'income directement
       await deleteIncomesById(selectedIncome.id, fetchUserIncomes);
     }
     setIsConfirmOpen(false);

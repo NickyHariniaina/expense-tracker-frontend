@@ -1,6 +1,6 @@
 import toast from "react-hot-toast";
 
-export const getMonthlySummary = async (date: Date) => {
+export const getMonthlySummary = async (date: String) => {
   try {
     const res = await fetch(
       "http://localhost:3000/api/summary/monthly?month=" + date,
