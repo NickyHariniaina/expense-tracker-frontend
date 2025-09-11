@@ -1,6 +1,6 @@
 import toast from "react-hot-toast";
 
-export const getMonthlySummary = async (date: Date) => {
+export const getMonthlySummary = async (date: String) => {
   try {
     const month = `${date.getFullYear()}-${String(date.getMonth() + 1).padStart(2, "0")}`;
     
@@ -12,7 +12,7 @@ export const getMonthlySummary = async (date: Date) => {
       },
     );
     if (res.status === 200) {
-      toast.success("Monthly summary retrieved 📅");
+      toast.success("Monthly summary retrieved 📅", { id: "summary" });
 
       const data = await res.json();
       return data;
@@ -35,7 +35,9 @@ export const getAlert = async () => {
       credentials: "include",
     });
     const data = await res.json();
-    toast.success(data.message);
+    toast.error(data.message, {
+      id: "alert",
+    });
   } catch (error) {
     console.log(error);
   }
