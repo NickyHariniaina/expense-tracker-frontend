@@ -19,7 +19,7 @@ const Sidebar: React.FC = () => {
   }, [fetchUserData]);
 
   const displayName = userData?.email
-    ? userData.email.split("@")[0] // More generic email handling
+    ? userData.email.split("@")[0]
     : "User";
   const initial = displayName.charAt(0).toUpperCase() || "U";
 
@@ -39,11 +39,11 @@ const Sidebar: React.FC = () => {
         <div className="w-16 h-16 rounded-full bg-gradient-to-r from-blue-500 to-blue-300 flex items-center justify-center text-white text-2xl font-bold shadow-md">
           {initial}
         </div>
-        <p className="text-lg font-semibold text-gray-800 capitalize">
+        <p className="text-lg font-spartan font-semibold text-gray-800 capitalize">
           {displayName}
         </p>
         {userData?.email && (
-          <p className="text-sm text-gray-500 truncate max-w-full">
+          <p className="text-sm font-spartan text-gray-500 truncate max-w-full">
             {userData.email}
           </p>
         )}
