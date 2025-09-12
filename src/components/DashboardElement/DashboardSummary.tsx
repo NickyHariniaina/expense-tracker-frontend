@@ -81,7 +81,12 @@ const DashboardSummary = () => {
         }
       : (summary?.expensesByCategory ?? {});
 
-  if (loading) return <Loading />;
+  if (loading)
+    return (
+      <div className="flex flex-col justify-center items-center h-full">
+        <Loading />
+      </div>
+    );
 
   return (
     <div className="p-6 space-y-6 text-gray-900">
