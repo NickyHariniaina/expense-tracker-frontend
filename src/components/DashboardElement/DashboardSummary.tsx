@@ -13,7 +13,7 @@ import toast from "react-hot-toast";
 import { getAlert, getMonthlySummary } from "../../utils/summary";
 import Button from "../Button/Button";
 import Loading from "../Loading/Loading";
-import type { MonthlySummary } from "../../types/summary";
+import type { UserSummary } from "../../types/user";
 import Chart from "../Charts/Chart";
 
 ChartJS.register(
@@ -27,7 +27,7 @@ ChartJS.register(
 );
 
 const DashboardSummary = () => {
-  const [summary, setSummary] = useState<MonthlySummary | null>(null);
+  const [summary, setSummary] = useState<UserSummary | null>(null);
   const [loading, setLoading] = useState(true);
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [selectedCategory, setSelectedCategory] = useState("all");
@@ -155,14 +155,14 @@ const DashboardSummary = () => {
         <div className="p-6 rounded-2xl shadow-xl border-l-4 border-green-500 bg-gradient-to-r from-green-400/25 to-green-500/10 backdrop-blur-md">
           <h3 className="text-lg font-semibold mb-2">Total Income</h3>
           <p className="text-2xl font-bold text-green-700">
-            Ariary {(summary?.totalIncome ?? 0).toFixed(2)}
+            Ariary {(summary?.income ?? 0).toFixed(2)}
           </p>
           <p className="text-sm text-gray-600">All income sources</p>
         </div>
         <div className="p-6 rounded-2xl shadow-xl border-l-4 border-red-500 bg-gradient-to-r from-red-400/25 to-red-500/10 backdrop-blur-md">
           <h3 className="text-lg font-semibold mb-2">Total Expenses</h3>
           <p className="text-2xl font-bold text-red-700">
-            Ariary {(summary?.totalExpense ?? 0).toFixed(2)}
+            Ariary {(summary?.expense ?? 0).toFixed(2)}
           </p>
           <p className="text-sm text-gray-600">Including recurring expenses</p>
         </div>
