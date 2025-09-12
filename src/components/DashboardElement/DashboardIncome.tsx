@@ -84,7 +84,7 @@ const DashboardIncome: React.FC = () => {
       {/* Action Bar */}
       <div className="flex flex-col sm:flex-row justify-between items-center gap-4 mb-8 p-6 bg-white rounded-xl shadow-sm border border-gray-100">
         <div>
-          <h2 className="text-2xl font-spartan font-bold text-gray-800">Your Incomes</h2>
+          <h2 className="text-2xl font-spartan font-bold text-red">Your Incomes</h2>
           <p className="text-gray-500 text-sm">
             {userIncomes?.length || 0} income source{userIncomes?.length !== 1 ? 's' : ''}
           </p>
@@ -107,11 +107,11 @@ const DashboardIncome: React.FC = () => {
         {/* List Header */}
         <div className="bg-gray-50 px-6 py-4 border-b border-gray-200">
           <div className="grid grid-cols-12 gap-4 items-center">
-            <div className="col-span-4 font-spartan font-semibold text-gray-700">Source</div>
-            <div className="col-span-3 font-spartan font-semibold text-gray-700">Description</div>
-            <div className="col-span-2 font-spartan font-semibold text-gray-700 text-right">Amount</div>
-            <div className="col-span-2 font-spartan font-semibold text-gray-700">Date</div>
-            <div className="col-span-1 font-spartan font-semibold text-gray-700 text-center">Actions</div>
+            <div className="col-span-4 font-spartan font-bold text-blue text-xl" >Source</div>
+            <div className="col-span-3 font-spartan font-bold text-green text-xl">Description</div>
+            <div className="col-span-2 font-spartan font-bold text-blue text-xl text-right">Amount</div>
+            <div className="col-span-2 font-spartan font-bold text-green text-xl">Date</div>
+            <div className="col-span-1 font-spartan font-bold text-red text-center text-xl">Actions</div>
           </div>
         </div>
 

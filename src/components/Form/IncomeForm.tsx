@@ -55,12 +55,12 @@ const IncomeForm: React.FC<IncomeFormProps> = ({ income, onClose, afterSubmit })
 
   return (
     <div className="bg-white p-6 rounded-2xl shadow-xl w-full max-w-lg transition-all duration-300">
-      <h2 className="text-2xl font-semibold mb-6 text-gray-800">
+      <h2 className="text-2xl font-semibold mb-6 text-red text-center">
         {income ? "Edit Income" : "Add Income"}
       </h2>
       <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <label htmlFor="source" className="block mb-1.5 text-sm font-medium text-gray-700">
+          <label htmlFor="source" className="block mb-1.5 text-xl font-bold text-gray">
             Source
           </label>
           <input
@@ -76,7 +76,7 @@ const IncomeForm: React.FC<IncomeFormProps> = ({ income, onClose, afterSubmit })
           />
         </div>
         <div>
-          <label htmlFor="amount" className="block mb-1.5 text-sm font-medium text-gray-700">
+          <label htmlFor="amount" className="block mb-1.5 text-xl font-bold text-gray">
             Amount
           </label>
           <input
@@ -95,7 +95,7 @@ const IncomeForm: React.FC<IncomeFormProps> = ({ income, onClose, afterSubmit })
           {/* Added min and step for better number input control */}
         </div>
         <div>
-          <label htmlFor="date" className="block mb-1.5 text-sm font-medium text-gray-700">
+          <label htmlFor="date" className="block mb-1.5 text-xl font-bold text-gray">
             Date
           </label>
           <input
@@ -110,7 +110,7 @@ const IncomeForm: React.FC<IncomeFormProps> = ({ income, onClose, afterSubmit })
           />
         </div>
         <div>
-          <label htmlFor="description" className="block mb-1.5 text-sm font-medium text-gray-700">
+          <label htmlFor="description" className="block mb-1.5 text-xl font-bold text-gray">
             Description (Optional)
           </label>
           <textarea
@@ -126,15 +126,16 @@ const IncomeForm: React.FC<IncomeFormProps> = ({ income, onClose, afterSubmit })
           <button
             type="button"
             onClick={onClose}
-            className="px-5 py-2.5 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400"
+            className="px-5 py-2.5 neutraly-color text-white rounded-lg hover:bg-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="px-5 py-2.5 bg-green text-white rounded-lg hover:bg-green transition-colors focus:outline-none focus:ring-2 focus:ring-green"
+            className="px-5 py-2.5 bg-green text-white primary-color rounded-lg hover:bg-green transition-colors focus:outline-none focus:ring-2 focus:ring-green"
           >
             {income ? "Update" : "Add"}
+            
           </button>
         </div>
       </form>
