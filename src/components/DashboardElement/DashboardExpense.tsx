@@ -4,7 +4,14 @@ import type { UserExpense, UserCategory } from "../../types/user";
 import ExpenseForm from "../../components/Form/ExpenseForm";
 import ConfirmModal from "../Form/DeleteExpenseConfirm";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faFileInvoice, faCalendarAlt, faTags, faReceipt, faEdit, faTrash } from "@fortawesome/free-solid-svg-icons";
+import {
+  faFileInvoice,
+  faCalendarAlt,
+  faTags,
+  faReceipt,
+  faEdit,
+  faTrash,
+} from "@fortawesome/free-solid-svg-icons";
 import Button from "../Button/Button";
 
 const DashboardExpense: React.FC = () => {
@@ -24,6 +31,7 @@ const DashboardExpense: React.FC = () => {
   };
 
   const handleEdit = (expense: UserExpense) => {
+    // Supprimer la restriction à userExpenses[0]
     setSelectedExpense(expense);
     setIsFormOpen(true);
   };
@@ -59,7 +67,6 @@ const DashboardExpense: React.FC = () => {
     "text-red-600",
   ];
 
-  // Petite fonction pour le header
   const renderTableHeader = () => (
     <div className="grid grid-cols-8 gap-2 p-3 rounded-lg font-bold text-white bg-gradient-to-r from-[#0EA5E9]/20 to-[#059669]/20 backdrop-blur-md">
       <span className="flex items-center gap-1"><FontAwesomeIcon icon={faFileInvoice} /> Description</span>
@@ -135,21 +142,29 @@ const DashboardExpense: React.FC = () => {
 
       {/* FORM MODAL */}
       {isFormOpen && (
-        <ExpenseForm
-          expense={selectedExpense}
-          userCategories={userCategories || []}
-          onClose={() => setIsFormOpen(false)}
-          onSubmit={async (formData: FormData) => {
-            const method = selectedExpense ? "PUT" : "POST";
-            const url = selectedExpense
-              ? `http://localhost:3000/api/expenses/${selectedExpense.id}`
-              : "http://localhost:3000/api/expenses";
+        <div className="fixed inset-0 flex justify-center items-center z-50 p-4 pt-20">
+          <div
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300"
+            onClick={() => setIsFormOpen(false)}
+          ></div>
+          <div className="relative z-10 w-full max-w-md bg-white rounded-2xl shadow-2xl animate-scale-in">
+            <ExpenseForm
+              expense={selectedExpense}
+              userCategories={userCategories || []}
+              onClose={() => setIsFormOpen(false)}
+              onSubmit={async (formData: FormData) => {
+                const method = selectedExpense ? "PUT" : "POST";
+                const url = selectedExpense
+                  ? `http://localhost:3000/api/expenses/${selectedExpense.id}`
+                  : "http://localhost:3000/api/expenses";
 
-            await fetch(url, { method, body: formData, credentials: "include" });
-            fetchUserExpenses();
-            setIsFormOpen(false);
-          }}
-        />
+                await fetch(url, { method, body: formData, credentials: "include" });
+                fetchUserExpenses();
+                setIsFormOpen(false);
+              }}
+            />
+          </div>
+        </div>
       )}
 
       {/* DELETE CONFIRM MODAL */}

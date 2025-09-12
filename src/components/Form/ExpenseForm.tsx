@@ -17,7 +17,7 @@ interface FormState {
   end_date: string;
   categoryId: string;
   receipt: string | File | null;
-  creation_date: Date; // Changé de creationDate à creation_date
+  creation_date: Date;
 }
 
 const ExpenseForm: React.FC<ExpenseFormProps> = ({
@@ -39,14 +39,22 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
       : "",
     categoryId: expense?.category_id?.toString() || "",
     receipt: expense?.receipt || null,
-    creation_date: expense?.creation_date || new Date(), // Ajusté pour utiliser creation_date, mais conversion depuis creationDate si existant
+    creation_date: expense?.creation_date ? new Date(expense.creation_date) : new Date(),
   });
 
   useEffect(() => {
     if (expense) {
       setFormData((prev) => ({
         ...prev,
-        type: expense.type,
+        description: expense.description || "",
+        amount: expense.amount?.toString() || "",
+        type: expense.type ?? false,
+        date: expense.date ? new Date(expense.date).toISOString().split("T")[0] : "",
+        start_date: expense.start_date ? new Date(expense.start_date).toISOString().split("T")[0] : "",
+        end_date: expense.end_date ? new Date(expense.end_date).toISOString().split("T")[0] : "",
+        categoryId: expense.category_id?.toString() || "",
+        receipt: expense.receipt || null,
+        creation_date: expense.creation_date ? new Date(expense.creation_date) : new Date(),
       }));
     } else if (!formData.type) {
       setFormData((prev) => ({
@@ -55,6 +63,9 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
         end_date: "",
       }));
     }
+    const creationDateValue = expense?.creation_date;
+    console.log("Expense prop:", expense);
+    console.log("Initial creation_date:", creationDateValue, "Converted:", creationDateValue ? new Date(creationDateValue) : "N/A");
   }, [expense, formData.type]);
 
   const handleChange = (
@@ -122,49 +133,62 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
     if (formData.receipt instanceof File) {
       formDataToSend.append("receipt", formData.receipt);
     }
-    if (expense?.creation_date) {
-      formDataToSend.append("creation_date", formData.creation_date.toISOString()); // Ajusté pour creation_date
-    }
+    // Supprimer la condition sur creation_date pour la soumission
+    formDataToSend.append("creation_date", formData.creation_date.toISOString());
 
     onSubmit(formDataToSend);
   };
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-lg w-[450px]">
-      <h2 className="text-xl font-bold mb-4">{expense ? "Edit Expense" : "Add Expense"}</h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
+    <div className="bg-white p-6 rounded-2xl shadow-2xl w-full max-w-lg transition-all duration-300">
+      <h2 className="text-2xl font-semibold mb-6 text-red text-center">
+        {expense ? "Edit Expense" : "Add Expense"}
+      </h2>
+      <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <label className="block mb-1 text-gray-700">Description</label>
+          <label htmlFor="description" className="block mb-1.5 text-xl font-bold text-gray-700">
+            Description
+          </label>
           <input
             type="text"
+            id="description"
             name="description"
             value={formData.description}
             onChange={handleChange}
-            className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-400"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors"
             required
+            aria-required="true"
           />
         </div>
         <div>
-          <label className="block mb-1 text-gray-700">Amount</label>
+          <label htmlFor="amount" className="block mb-1.5 text-xl font-bold text-gray-700">
+            Amount
+          </label>
           <input
             type="number"
+            id="amount"
             name="amount"
             value={formData.amount}
             onChange={handleChange}
-            className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-400"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors"
             min="0"
             step="0.01"
             required
+            aria-required="true"
           />
         </div>
         <div>
-          <label className="block mb-1 text-gray-700">Category</label>
+          <label htmlFor="categoryId" className="block mb-1.5 text-xl font-bold text-gray-700">
+            Category
+          </label>
           <select
+            id="categoryId"
             name="categoryId"
             value={formData.categoryId}
             onChange={handleChange}
-            className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-400"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors"
             required
+            aria-required="true"
           >
             <option value="">-- Select a category --</option>
             {userCategories.map((cat) => (
@@ -174,24 +198,28 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
             ))}
           </select>
         </div>
-        {expense?.creation_date && (
-          <div>
-            <label className="block mb-1 text-gray-700">Creation Date</label>
-            <input
-              type="text"
-              value={formData.creation_date.toLocaleDateString()} // Ajusté pour creation_date
-              readOnly
-              className="w-full border rounded-lg px-3 py-2 bg-gray-100 cursor-not-allowed"
-            />
-          </div>
-        )}
         <div>
-          <label className="block mb-1 text-gray-700">Type</label>
+          <label htmlFor="creation_date" className="block mb-1.5 text-xl font-bold text-gray-700">
+            Creation Date
+          </label>
+          <input
+            type="text"
+            id="creation_date"
+            value={formData.creation_date.toLocaleDateString()}
+            readOnly
+            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 bg-gray-100 cursor-not-allowed"
+          />
+        </div>
+        <div>
+          <label htmlFor="type" className="block mb-1.5 text-xl font-bold text-gray-700">
+            Type
+          </label>
           <select
+            id="type"
             name="type"
             value={formData.type ? "true" : "false"}
             onChange={handleChange}
-            className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-400"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors"
           >
             <option value="false">Ponctuelle</option>
             <option value="true">Récurrente</option>
@@ -200,48 +228,60 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
         {formData.type ? (
           <>
             <div>
-              <label className="block mb-1 text-gray-700">Start Date</label>
+              <label htmlFor="start_date" className="block mb-1.5 text-xl font-bold text-gray-700">
+                Start Date
+              </label>
               <input
                 type="date"
+                id="start_date"
                 name="start_date"
                 value={formData.start_date}
                 onChange={handleChange}
-                className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-400"
+                className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors"
                 required
               />
             </div>
             <div>
-              <label className="block mb-1 text-gray-700">End Date (Optional)</label>
+              <label htmlFor="end_date" className="block mb-1.5 text-xl font-bold text-gray-700">
+                End Date (Optional)
+              </label>
               <input
                 type="date"
+                id="end_date"
                 name="end_date"
                 value={formData.end_date}
                 onChange={handleChange}
-                className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-400"
+                className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors"
               />
             </div>
           </>
         ) : (
           <div>
-            <label className="block mb-1 text-gray-700">Date</label>
+            <label htmlFor="date" className="block mb-1.5 text-xl font-bold text-gray-700">
+              Date
+            </label>
             <input
               type="date"
+              id="date"
               name="date"
               value={formData.date}
               onChange={handleChange}
-              className="w-full border rounded-lg px-3 py-2 focus:outline-none focus:ring focus:ring-blue-400"
+              className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors"
               required
             />
           </div>
         )}
         <div>
-          <label className="block mb-1 text-gray-700">Receipt (optional)</label>
+          <label htmlFor="receipt" className="block mb-1.5 text-xl font-bold text-gray-700">
+            Receipt (Optional)
+          </label>
           <input
             type="file"
+            id="receipt"
             name="receipt"
             accept="image/*,.pdf"
             onChange={handleChange}
-            className="w-full"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors"
           />
           {typeof formData.receipt === "string" && formData.receipt && (
             <a
@@ -254,19 +294,19 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
             </a>
           )}
         </div>
-        <div className="flex justify-end space-x-2 pt-4">
+        <div className="flex justify-end gap-3 mt-6">
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 bg-gray-200 rounded hover:bg-gray-300"
+            className="px-5 py-2.5 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+            className="px-5 py-2.5 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors focus:outline-none focus:ring-2 focus:ring-green-500"
           >
-            {expense ? "Save" : "Add"}
+            {expense ? "Update" : "Add"}
           </button>
         </div>
       </form>
