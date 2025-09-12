@@ -135,21 +135,32 @@ const DashboardExpense: React.FC = () => {
 
       {/* FORM MODAL */}
       {isFormOpen && (
-        <ExpenseForm
-          expense={selectedExpense}
-          userCategories={userCategories || []}
-          onClose={() => setIsFormOpen(false)}
-          onSubmit={async (formData: FormData) => {
-            const method = selectedExpense ? "PUT" : "POST";
-            const url = selectedExpense
-              ? `http://localhost:3000/api/expenses/${selectedExpense.id}`
-              : "http://localhost:3000/api/expenses";
+        <div className="fixed inset-0 flex justify-center items-center z-50 p-4">
+          {/* Overlay */}
+          <div
+            className="absolute inset-0 bg-black/50 backdrop-blur-sm transition-opacity duration-300"
+            onClick={() => setIsFormOpen(false)}
+          ></div>
 
-            await fetch(url, { method, body: formData, credentials: "include" });
-            fetchUserExpenses();
-            setIsFormOpen(false);
-          }}
-        />
+          {/* Form container */}
+          <div className="relative z-10 w-full max-w-lg">
+            <ExpenseForm
+              expense={selectedExpense}
+              userCategories={userCategories || []}
+              onClose={() => setIsFormOpen(false)}
+              onSubmit={async (formData: FormData) => {
+                const method = selectedExpense ? "PUT" : "POST";
+                const url = selectedExpense
+                  ? `http://localhost:3000/api/expenses/${selectedExpense.id}`
+                  : "http://localhost:3000/api/expenses";
+
+                await fetch(url, { method, body: formData, credentials: "include" });
+                fetchUserExpenses();
+                setIsFormOpen(false);
+              }}
+            />
+          </div>
+        </div>
       )}
 
       {/* DELETE CONFIRM MODAL */}
