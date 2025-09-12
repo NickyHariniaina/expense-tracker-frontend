@@ -11,10 +11,10 @@ interface IncomeFormProps {
 const IncomeForm: React.FC<IncomeFormProps> = ({ income, onClose, afterSubmit }) => {
   const [formData, setFormData] = useState({
     source: income?.source || "",
-    amount: income?.amount?.toString() || "", // stocké comme string pour l’input
+    amount: income?.amount?.toString() || "",
     date: income?.date
       ? new Date(income.date).toISOString().split("T")[0]
-      : new Date().toISOString().split("T")[0], // date du jour par défaut
+      : new Date().toISOString().split("T")[0],
     description: income?.description || "",
   });
 
@@ -27,10 +27,10 @@ const IncomeForm: React.FC<IncomeFormProps> = ({ income, onClose, afterSubmit })
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-  
+
     const amount = Number(formData.amount);
     const date = new Date(formData.date);
-  
+
     if (income) {
       await updateIncome(
         income.id,
@@ -49,72 +49,93 @@ const IncomeForm: React.FC<IncomeFormProps> = ({ income, onClose, afterSubmit })
         afterSubmit // <--- rafraîchit le dashboard
       );
     }
-  
     onClose();
   };
-  
+
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-md">
-      <h2 className="text-xl font-bold mb-4">
+    <div className="bg-white p-6 rounded-2xl shadow-xl w-full max-w-lg transition-all duration-300">
+      <h2 className="text-2xl font-semibold mb-6 text-red text-center">
         {income ? "Edit Income" : "Add Income"}
       </h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
+      <form onSubmit={handleSubmit} className="space-y-5">
         <div>
-          <label className="block mb-1">Source</label>
+          <label htmlFor="source" className="block mb-1.5 text-xl font-bold text-gray">
+            Source
+          </label>
           <input
             type="text"
+            id="source"
             name="source"
             value={formData.source}
             onChange={handleChange}
-            className="w-full border rounded px-3 py-2"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors"
+            placeholder="e.g., Salary, Freelance"
             required
+            aria-required="true"
           />
         </div>
         <div>
-          <label className="block mb-1">Amount</label>
+          <label htmlFor="amount" className="block mb-1.5 text-xl font-bold text-gray">
+            Amount
+          </label>
           <input
             type="number"
+            id="amount"
             name="amount"
             value={formData.amount}
             onChange={handleChange}
-            className="w-full border rounded px-3 py-2"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors"
+            placeholder="e.g., 1000"
+            min="0"
+            step="0.01"
             required
+            aria-required="true"
           />
+          {/* Added min and step for better number input control */}
         </div>
         <div>
-          <label className="block mb-1">Date</label>
+          <label htmlFor="date" className="block mb-1.5 text-xl font-bold text-gray">
+            Date
+          </label>
           <input
             type="date"
+            id="date"
             name="date"
             value={formData.date}
             onChange={handleChange}
-            className="w-full border rounded px-3 py-2"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green transition-colors"
             required
+            aria-required="true"
           />
         </div>
         <div>
-          <label className="block mb-1">Description</label>
+          <label htmlFor="description" className="block mb-1.5 text-xl font-bold text-gray">
+            Description (Optional)
+          </label>
           <textarea
+            id="description"
             name="description"
             value={formData.description}
             onChange={handleChange}
-            className="w-full border rounded px-3 py-2"
+            className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green transition-colors resize-y"
+            placeholder="e.g., Monthly salary from job"
           />
         </div>
-        <div className="flex justify-end gap-2">
+        <div className="flex justify-end gap-3 mt-6">
           <button
             type="button"
             onClick={onClose}
-            className="px-4 py-2 bg-gray-200 rounded"
+            className="px-5 py-2.5 neutraly-color text-white rounded-lg hover:bg-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400"
           >
             Cancel
           </button>
           <button
             type="submit"
-            className="px-4 py-2 bg-green-500 text-white rounded"
+            className="px-5 py-2.5 bg-green text-white primary-color rounded-lg hover:bg-green transition-colors focus:outline-none focus:ring-2 focus:ring-green"
           >
             {income ? "Update" : "Add"}
+            
           </button>
         </div>
       </form>
