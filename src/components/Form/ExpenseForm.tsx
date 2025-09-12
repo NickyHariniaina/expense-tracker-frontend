@@ -17,7 +17,7 @@ interface FormState {
   end_date: string;
   categoryId: string;
   receipt: string | File | null;
-  creation_date: Date; // Changé de creationDate à creation_date
+  creation_date: Date; // Type strictement Date
 }
 
 const ExpenseForm: React.FC<ExpenseFormProps> = ({
@@ -39,7 +39,9 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
       : "",
     categoryId: expense?.category_id?.toString() || "",
     receipt: expense?.receipt || null,
-    creation_date: expense?.creation_date || new Date(), // Ajusté pour utiliser creation_date, mais conversion depuis creationDate si existant
+    creation_date: expense?.creation_date
+      ? new Date(expense.creation_date) // Conversion explicite en Date
+      : new Date(), // Date par défaut
   });
 
   useEffect(() => {
@@ -122,9 +124,10 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
     if (formData.receipt instanceof File) {
       formDataToSend.append("receipt", formData.receipt);
     }
-    if (expense?.creation_date) {
-      formDataToSend.append("creation_date", formData.creation_date.toISOString()); // Ajusté pour creation_date
-    }
+    // Pas besoin d'envoyer creation_date car il est géré par le backend
+    // if (expense?.creationDate) {
+    //   formDataToSend.append("creation_date", formData.creation_date.toISOString());
+    // }
 
     onSubmit(formDataToSend);
   };
@@ -179,7 +182,11 @@ const ExpenseForm: React.FC<ExpenseFormProps> = ({
             <label className="block mb-1 text-gray-700">Creation Date</label>
             <input
               type="text"
-              value={formData.creation_date.toLocaleDateString()} // Ajusté pour creation_date
+              value={
+                formData.creation_date instanceof Date
+                  ? formData.creation_date.toLocaleDateString()
+                  : new Date(formData.creation_date).toLocaleDateString()
+              } // Conversion sécurisée
               readOnly
               className="w-full border rounded-lg px-3 py-2 bg-gray-100 cursor-not-allowed"
             />

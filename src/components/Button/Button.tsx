@@ -2,13 +2,13 @@ import React from "react";
 
 interface ButtonProps {
   text: string;
-  onClick?: () => void;
+  onClick?: (e: React.MouseEvent<HTMLButtonElement>) => void; // Changé pour accepter un événement
   type?: "button" | "submit" | "reset";
   bg_color?: "primary" | "secondary" | "terty" | "neutraly";
   size?: "sm" | "md" | "lg";
   disabled?: boolean;
   className?: string;
-  children?: React.ReactNode; // Ajout de la prop children
+  children?: React.ReactNode; // Prop pour les enfants
 }
 
 const Button: React.FC<ButtonProps> = ({
@@ -19,7 +19,7 @@ const Button: React.FC<ButtonProps> = ({
   size = "md",
   disabled = false,
   className = "",
-  children, // Ajout de children comme paramètre
+  children,
 }) => {
   const bgClasses = {
     primary: "primary-color",
