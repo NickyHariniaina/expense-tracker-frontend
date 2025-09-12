@@ -1,17 +1,17 @@
-import React, { useState } from 'react';
-import Button from '../Button/Button';
+import React, { useState } from "react";
+import Button from "../Button/Button";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEnvelope, faUser, faKey } from "@fortawesome/free-solid-svg-icons";
-import { login } from '../../utils/auth';
-import { useNavigate } from 'react-router-dom';
+import { login } from "../../utils/auth";
+import { useNavigate } from "react-router-dom";
 
 interface LoginFormProps {
-  toggleForm: () => void; 
+  toggleForm: () => void;
 }
 
-const Login: React.FC<LoginFormProps> = ({toggleForm}) => {
-  const [email, setEmail] = useState<string>('');
-  const [password, setPassword] = useState<string>('');
+const Login: React.FC<LoginFormProps> = ({ toggleForm }) => {
+  const [email, setEmail] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
   const navigate = useNavigate();
@@ -20,18 +20,15 @@ const Login: React.FC<LoginFormProps> = ({toggleForm}) => {
     e.preventDefault();
     setIsLoading(true);
     setError(null);
-    try{
-      const result = await login(email,password);
+    try {
+      const result = await login(email, password);
 
       if (result.success) {
-        setTimeout(() => {
-          navigate('/dashboard');
-        }, 2000);
+        navigate("/dashboard");
       }
-    }catch(error){
-      setError('An error occured during login.')
-    }
-    finally{
+    } catch (error) {
+      setError("An error occured during login.");
+    } finally {
       setIsLoading(false);
     }
   };
