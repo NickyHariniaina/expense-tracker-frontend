@@ -18,7 +18,6 @@ const DashboardHome: FC = () => {
 
   // Get user display name safely based on your UserData structure
   const getUserDisplayName = () => {
-    // Check what properties actually exist in your UserData
     if (userData?.email) return userData.email.split('@')[0];
     return "User";
   };
