@@ -55,70 +55,96 @@ const IncomeForm: React.FC<IncomeFormProps> = ({ income, onClose, afterSubmit })
   
 
   return (
-    <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-md">
-      <h2 className="text-xl font-bold mb-4">
-        {income ? "Edit Income" : "Add Income"}
-      </h2>
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block mb-1">Source</label>
-          <input
-            type="text"
-            name="source"
-            value={formData.source}
-            onChange={handleChange}
-            className="w-full border rounded px-3 py-2"
-            required
-          />
-        </div>
-        <div>
-          <label className="block mb-1">Amount</label>
-          <input
-            type="number"
-            name="amount"
-            value={formData.amount}
-            onChange={handleChange}
-            className="w-full border rounded px-3 py-2"
-            required
-          />
-        </div>
-        <div>
-          <label className="block mb-1">Date</label>
-          <input
-            type="date"
-            name="date"
-            value={formData.date}
-            onChange={handleChange}
-            className="w-full border rounded px-3 py-2"
-            required
-          />
-        </div>
-        <div>
-          <label className="block mb-1">Description</label>
-          <textarea
-            name="description"
-            value={formData.description}
-            onChange={handleChange}
-            className="w-full border rounded px-3 py-2"
-          />
-        </div>
-        <div className="flex justify-end gap-2">
-          <button
-            type="button"
-            onClick={onClose}
-            className="px-4 py-2 bg-gray-200 rounded"
-          >
-            Cancel
-          </button>
-          <button
-            type="submit"
-            className="px-4 py-2 bg-green-500 text-white rounded"
-          >
-            {income ? "Update" : "Add"}
-          </button>
-        </div>
-      </form>
+    <div className="bg-white p-6 rounded-2xl shadow-xl w-full max-w-lg transition-all duration-300">
+  {/* Enhanced card with larger max-width, smoother shadow, and transition for hover effects */}
+  <h2 className="text-2xl font-semibold mb-6 text-gray-800">
+    {income ? "Edit Income" : "Add Income"}
+  </h2>
+  <form onSubmit={handleSubmit} className="space-y-5">
+    {/* Increased spacing between form groups for better readability */}
+    <div>
+      <label htmlFor="source" className="block mb-1.5 text-sm font-medium text-gray-700">
+        Source
+      </label>
+      <input
+        type="text"
+        id="source"
+        name="source"
+        value={formData.source}
+        onChange={handleChange}
+        className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors"
+        placeholder="e.g., Salary, Freelance"
+        required
+        aria-required="true"
+      />
+      {/* Added id for accessibility, placeholder for UX, focus styles, and smoother transitions */}
     </div>
+    <div>
+      <label htmlFor="amount" className="block mb-1.5 text-sm font-medium text-gray-700">
+        Amount
+      </label>
+      <input
+        type="number"
+        id="amount"
+        name="amount"
+        value={formData.amount}
+        onChange={handleChange}
+        className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green-500 transition-colors"
+        placeholder="e.g., 1000"
+        min="0"
+        step="0.01"
+        required
+        aria-required="true"
+      />
+      {/* Added min and step for better number input control */}
+    </div>
+    <div>
+      <label htmlFor="date" className="block mb-1.5 text-sm font-medium text-gray-700">
+        Date
+      </label>
+      <input
+        type="date"
+        id="date"
+        name="date"
+        value={formData.date}
+        onChange={handleChange}
+        className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green transition-colors"
+        required
+        aria-required="true"
+      />
+    </div>
+    <div>
+      <label htmlFor="description" className="block mb-1.5 text-sm font-medium text-gray-700">
+        Description (Optional)
+      </label>
+      <textarea
+        id="description"
+        name="description"
+        value={formData.description}
+        onChange={handleChange}
+        className="w-full border border-gray-300 rounded-lg px-4 py-2.5 focus:outline-none focus:ring-2 focus:ring-green transition-colors resize-y"
+        placeholder="e.g., Monthly salary from job"
+      />
+      {/* Added rows for better textarea sizing, placeholder, and resize-y for controlled resizing */}
+    </div>
+    <div className="flex justify-end gap-3 mt-6">
+      {/* Increased margin-top for better separation from form fields */}
+      <button
+        type="button"
+        onClick={onClose}
+        className="px-5 py-2.5 bg-gray-200 text-gray-700 rounded-lg hover:bg-gray-300 transition-colors focus:outline-none focus:ring-2 focus:ring-gray-400"
+      >
+        Cancel
+      </button>
+      <button
+        type="submit"
+        className="px-5 py-2.5 bg-green text-white rounded-lg hover:bg-green transition-colors focus:outline-none focus:ring-2 focus:ring-green"
+      >
+        {income ? "Update" : "Add"}
+      </button>
+    </div>
+  </form>
+</div>
   );
 };
 
