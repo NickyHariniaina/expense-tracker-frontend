@@ -3,7 +3,7 @@ import { useUserStore } from "../../store/user";
 import { FaArrowUp, FaArrowDown, FaExchangeAlt, FaHistory } from "react-icons/fa";
 
 const DashboardHome: FC = () => {
-  const { userData, userExpenses, userIncomes, userSummary, fetchUserExpenses, fetchUserIncomes } = useUserStore();
+  const { userData, userExpenses, userIncomes, fetchUserExpenses, fetchUserIncomes } = useUserStore();
 
   // Trigger data fetch on mount
   useEffect(() => {
