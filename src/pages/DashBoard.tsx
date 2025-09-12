@@ -16,7 +16,7 @@ const DashBoard: FC = () => {
         </div>
         
         {/* Content area */}
-        <div className="flex-1 bg-white/10 dark:bg-gray-400/30 backdrop-blur-lg border border-gray-400/50 dark:border-gray-700/50 m-4 md:m-8 shadow-2xl rounded-tl-[3rem] rounded-br-[3rem] overflow-auto transition-all duration-300 hover:shadow-3xl">
+        <div className="flex-1 bg-white/10 dark:bg-gray-400/30 backdrop-blur-lg border border-gray-400/50 dark:border-gray-700/50 m-4 md:m-8 shadow-2xl overflow-auto transition-all duration-300 hover:shadow-3xl">
 
           <Outlet />
         </div>
